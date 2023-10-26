@@ -1,0 +1,6 @@
+exportPattern("^[[:alpha:]]+")
+
+importFrom("stats", "as.formula", "complete.cases", "cor", "cov",
+           "filter", "kruskal.test", "ks.test", "quantile", "rnorm",
+           "sd")
+importFrom("utils", "read.csv", "read.table", "write.csv")

@@ -1,0 +1,38 @@
+Type: Package
+Package: fingR
+Title: A package to support sediment source fingerprinting studies 
+Version: 1.1.0
+Authors:
+  person("Thomas", "Chalaux-Clergue",  role = c("aut","cre"), email = "thomaschalaux@icloud.com", comment = c(ORCID = "0000-0003-3525-832X")),
+  person("Rémi", "Bizeul", role = c("aut","cre"), email = "rbizeul59@gmail.com", comment = c(ORCID = "0000-0002-4103-9839"))
+Maintainer:
+  The package maintainer <thomaschalaux@icloud.com> and <rbizeul59@gmail.com>
+Description:
+  A package to support sediment source fingerprinting studies:
+  characterising your dataset, selecting tracers (three-step method), modelling source contribution (BMM) and assessing the quality of modelling
+  predictions using virtual mixtures (support BMM and MixSIAR).
+Depends:
+  R (>= 4.2.2)
+Imports:
+  dplyr (>= 1.0.10),
+  ggplot2 (>= 3.4.0),
+  foreach (>= 1.5.2),
+  NSM3 (>= 1.17),
+  NbClust (>= 3.0.1),
+  klaR (>= 1.7-2),
+  MASS (>= 7.3-60)
+Suggests:
+  MixSIAR (>= 3.1.12),
+  reshape2 (>= 1.4.4),
+  tibble (>= 3.1.8),
+  ape (>= 5.7-2)
+URL: https://doi.org/10.5281/zenodo.8293595
+License: GPL (>= 3)
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.2.3
+Config/testthat/edition: 3
+Packaged: 2023-10-26
+Author:
+  Thomas Chalaux-Clergue [aut, cre] ("0000-0003-3525-832X"),
+  Rémi Bizeul [cre] ("0000-0002-4103-9839")
