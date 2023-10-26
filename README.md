@@ -1,4 +1,4 @@
-fingR: a Framework for Sediment Source Fingerprinting
+fingR: fingR: A support for sediment source fingerprinting studies
 ================
 
 The fingR package is a package to support sediment source fingerprinting
@@ -946,7 +946,7 @@ BMM.accuracy
   in the Mano Dam Reservoir (Hayama Lake) catchment, Fukushima
   Prefecture, Japan. (Version 1) \[Data set\]. Zenodo.
   \[<https://doi.org/10.5281/zenodo.7081094>\]
-- Chalaux-Clergue, Thomas, Bizeul, Rémi, Batista, Pedro V. G.,
-  Martinez-Carreras, Nuria, Laceby, J. Patrick, Evrard, Olivier
-  \[submitted\]. Sensitivity of source sediment fingerprinting modelling
-  to tracer selection. SOIL.
+- Chalaux-Clergue, T., Bizeul, R., Batista, P. V. G., Martinez-
+  Carreras,  N., Laceby, J. P., and Evrard, O.: Sensitivity of source 
+  sediment fingerprinting modelling to tracer selection methods,
+  EGUsphere [preprint], https://doi.org/10.5194/egusphere-2023-1970, 2023. 
