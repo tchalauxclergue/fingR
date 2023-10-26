@@ -1,4 +1,4 @@
-fingR: fingR: A support for sediment source fingerprinting studies
+fingR: A support for sediment source fingerprinting studies
 ================
 
 The fingR package is a package to support sediment source fingerprinting
