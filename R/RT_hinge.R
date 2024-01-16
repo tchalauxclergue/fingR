@@ -16,7 +16,7 @@ RT.hinge <- function(target, sources, class, h.range, alternative = "single"){
   require(dplyr)
 
   property <- dplyr::setdiff(colnames(sources), class) #get the property label
-  lvl <- lvl.signif(sources[[property]])
+  lvl <- fingR::lvl.signif(sources[[property]])
   # set the probability associated with setted hinge range (h.range)
   prob.hinge <- c((50 - h.range/2)/100, (50 + h.range/2)/100)
 

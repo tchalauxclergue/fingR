@@ -14,7 +14,8 @@ RT.whiskers <- function(target, sources, class, alternative = "single"){
   require(dplyr)
 
   property <- dplyr::setdiff(colnames(sources), class) #get the property label
-  lvl <- lvl.signif(sources[[property]])
+  lvl <- fingR::lvl.signif(sources[[property]])
+  
   #source whiskers
   source.bounds <- as.data.frame(sources) %>%
     dplyr::group_by(.data[[class]]) %>%

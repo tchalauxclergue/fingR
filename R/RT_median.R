@@ -15,13 +15,14 @@ RT.median <- function(target, sources, class, alternative = "single"){
   require(dplyr)
 
   property <- dplyr::setdiff(colnames(sources), class) #get the property label
+  lvl <- fingR::lvl.signif(sources[[property]])
 
   # sources mean
   source.bounds <- as.data.frame(sources) %>%
     dplyr::group_by(.data[[class]]) %>%
     dplyr::summarise(dplyr::across(.cols = dplyr::all_of(property), .fns = list(stats::median)))
 
-  source.bounds[2] <- round(source.bounds[2], fingR::lvl.signif(sources[[property]]))
+  source.bounds[2] <- round(source.bounds[2], lvl)
 
   #get min of min and max of max add some measurement error if set (MM.error)
   bound.s <- c(min(source.bounds[2]), max(source.bounds[2]))

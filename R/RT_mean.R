@@ -17,7 +17,7 @@ RT.mean <- function(target, sources, class, alternative = "single", shift = .1){
   require(dplyr)
 
   property <- dplyr::setdiff(colnames(sources), class) #get the property label
-  lvl <- lvl.signif(sources[[property]])
+  lvl <- fingR::lvl.signif(sources[[property]])
 
   # convert to log to unsure Normal distribution
   sources[[property]] <- round(to.log(sources[[property]], shift), lvl+3)
