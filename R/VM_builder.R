@@ -43,7 +43,9 @@ VM.builder <- function(data, material, source.name = "Source", class, tracers, c
 
   # If no contributions are given
   if(missing(contributions)){
-    sources <- Hayama %>% dplyr::filter(.data[[material]] == source.name) %>% dplyr::select(dplyr::all_of(class)) %>% unlist() %>% as.factor() %>% levels() # get source labels
+    sources <- data %>%
+      dplyr::filter(.data[[material]] == source.name) %>%
+      dplyr::select(dplyr::all_of(class)) %>% unlist() %>% as.factor() %>% levels() # get source labels
 
     contributions <- fingR::VM.contrib.generator(n.sources = length(sources), groups = sources, step = step, save.dir = save.dir, note = note, fileEncoding = fileEncoding)
     VM.name <- colnames(contributions)[1]
