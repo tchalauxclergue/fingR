@@ -934,6 +934,20 @@ BMM.accuracy
     ## 1 Median Cropland -0.05 0.25 0.28 0.21    0.451    0.795    0.1440
     ## 2 Median   Forest -0.07 0.20 0.56 0.50    0.311    0.640    0.1126
     ## 3 Median  Subsoil  0.01 0.13 0.80 0.79    0.285    0.629    0.0811
+    
+The function *fingR::esp.values* calculate the number of samples that fell
+inside of the space of the virtual mixture predicted contributions
+
+``` r
+
+fingR::esp.values(obs = VM.contrib,
+                  pred = read.csv(paste0(save.dir.fingR, path.model, paste0("MixSIAR_VM_", method, "/"), paste0("MixSIAR_prevision_VM_", method, ".csv"))),
+                  sources = c("Cropland","Forest","Subsoil"),
+                  #sources.obs = c("Cropland","Forest","Subsoil"), #if source labels differ in obs and pred, indicate them
+                  #sources.pred = c("Cropland","Forest","Subsoil"),
+                  count = FALSE, #return percentage when FALSE (default) and count when TRUE. Or both if user want both
+                  digits = 0)
+```
 
 # References
 
@@ -945,7 +959,7 @@ BMM.accuracy
   laboratory mixtures for conducting sediment fingerprinting approaches
   in the Mano Dam Reservoir (Hayama Lake) catchment, Fukushima
   Prefecture, Japan. (Version 1) \[Data set\]. Zenodo.
-  \[<https://doi.org/10.5281/zenodo.7081094>\]
+  \[10.5281/zenodo.7081094>\]
 - Chalaux-Clergue, T., Bizeul, R., Batista, P. V. G., Martinez-
   Carreras,  N., Laceby, J. P., and Evrard, O.: Sensitivity of source 
   sediment fingerprinting modelling to tracer selection methods,
