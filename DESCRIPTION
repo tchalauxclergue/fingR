@@ -3,8 +3,8 @@ Package: fingR
 Title: A package to support sediment source fingerprinting studies 
 Version: 1.1.0
 Authors:
-  person("Thomas", "Chalaux-Clergue",  role = c("aut","cre"), email = "thomaschalaux@icloud.com", comment = c(ORCID = "0000-0003-3525-832X")),
-  person("Rémi", "Bizeul", role = c("aut","cre"), email = "rbizeul59@gmail.com", comment = c(ORCID = "0000-0002-4103-9839"))
+  person("Thomas", "Chalaux-Clergue",  role = c("aut","cre","cph"), email = "thomaschalaux@icloud.com", comment = c(ORCID = "0000-0003-3525-832X")),
+  person("Rémi", "Bizeul", role = c("aut", "cph"), email = "rbizeul59@gmail.com", comment = c(ORCID = "0000-0002-4103-9839"))
 Maintainer:
   The package maintainer <thomaschalaux@icloud.com> and <rbizeul59@gmail.com>
 Description:
@@ -26,7 +26,8 @@ Suggests:
   reshape2 (>= 1.4.4),
   tibble (>= 3.1.8),
   ape (>= 5.7-2)
-URL: https://doi.org/10.5281/zenodo.8293595
+URL: https://doi.org/10.5281/zenodo.10044404
+GitHub : https://github.com/tchalauxclergue/fingR
 License: GPL (>= 3)
 Encoding: UTF-8
 LazyData: true
@@ -34,5 +35,5 @@ RoxygenNote: 7.2.3
 Config/testthat/edition: 3
 Packaged: 2023-10-26
 Author:
-  Thomas Chalaux-Clergue [aut, cre] ("0000-0003-3525-832X"),
-  Rémi Bizeul [cre] ("0000-0002-4103-9839")
+  Thomas Chalaux-Clergue [aut, cre, cph] ("0000-0003-3525-832X"),
+  Rémi Bizeul [aut, cph] ("0000-0002-4103-9839")
