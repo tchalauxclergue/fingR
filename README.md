@@ -4,7 +4,7 @@
 [![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/tchalauxclergue/fingR/total?style=flat)
 ![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](http://www.repostatus.org/badges/latest/active.svg)](http://www.repostatus.org/#active)
 
-![](https://github.com/tchalauxclergue/fingR/assets/143781905/92a72258-f073-4110-92c7-14d7c335c47a){width=20%}
+![](https://github.com/tchalauxclergue/fingR/assets/143781905/c964d29e-c2ad-45b5-991c-affe14ead7a9)
 
 
 fingR: A support for sediment source fingerprinting studies
