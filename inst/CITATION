@@ -1,4 +1,4 @@
-citHeader("To cite the 'psych'fingR' package in publications use:")
+citHeader("To cite the 'fingR' package in publications use:")
 citEntry(entry  = "Manual",
          title  = "fingR: A package to support sediment source fingerprinting studies",
          author = "Chalaux-Clergue, Thomas and Bizeul, Rémi",
@@ -7,7 +7,7 @@ citEntry(entry  = "Manual",
          doi    = "https://doi.org/10.5281/zenodo.10044404",
          url    = "https://github.com/tchalauxclergue/fingR",
          textVersion = paste("Chalaux-Clergue, T. and Bizeul, R (2022). ", 
-               "fingR: A package to support sediment source fingerprinting studies,",
-               "Zenodo [code]. https://doi.org/10.5281/zenodo.10044404, ",
-                "Github [code]. https://github.com/tchalauxclergue/fingR, ",
+               "fingR: A package to support sediment source fingerprinting studies, ",
+               "Zenodo [code]: https://doi.org/10.5281/zenodo.10044404, ",
+                "Github [code]: https://github.com/tchalauxclergue/fingR, ",
                 " Version = 1.1.0",".",sep="") )
