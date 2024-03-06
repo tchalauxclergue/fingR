@@ -1,3 +1,11 @@
+![GitHub version](https://img.shields.io/github/r-package/v/tchalauxclergue/fingR?logo=github)
+![GitHub Release Date](https://img.shields.io/github/release-date/tchalauxclergue/fingR?color=blue)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1402028.svg)](https://doi.org/10.5281/zenodo.10044404)
+[![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/tchalauxclergue/fingR/total?style=flat)
+![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](http://www.repostatus.org/badges/latest/active.svg)](http://www.repostatus.org/#active)
+
+![](https://github.com/tchalauxclergue/fingR/assets/143781905/92a72258-f073-4110-92c7-14d7c335c47a){width=20%}
+
 fingR: A support for sediment source fingerprinting studies
 ================
 
@@ -18,7 +26,7 @@ MixSIAR).
   - [Discriminant Function Analysis (DFA) stepwise
     selection](#Discriminant-Function-Analysis-DFA-stepwise-selection)
 - [Source contribution modelling](#source-contribution-modelling)
-  - [Artificial mixtures](#artificial-mixtures)
+  - [Virtual mixtures](#Virtual-mixtures)
   - [Un-mixing model: MixSIAR](#mixsiar)
   - [Un-mixing model: BMM](#bmm)
 
@@ -46,7 +54,7 @@ devtools::install_local("path_to_file/fingR_1.1.0.tar.gz", repos = NULL)
 or from GitHub (version 1.1.0)
 
 ``` r
-devtools::install_github("https://github.com/tchalauxclergue/fingR", ref = "master", force = T)
+devtools::install_github("https://github.com/tchalauxclergue/fingR/releases/tag/1.1", ref = "master", force = T)
 ```
 
 ``` r
@@ -61,7 +69,7 @@ laboratory mixtures. Three types of source are represented: 24 cropland,
 22 forest and 10 subsoil. Various properties were measured: organic
 matter, geochemistry and diffuse reflectance. The full dataset and
 measurements protocols are available ([Chalaux-Clergue et al.,
-2022](https://doi.org/10.5281/zenodo.7081094)).
+2022](https://doi.org/10.5281/zenodo.10044404)).
 
 ``` r
 load(file = "data/Hayama.rda")
@@ -406,7 +414,7 @@ names(all.tracers) <- c("no.DFA.mSD.KW", "DFA.mSD.KW")
 
 # Source contribution modelling
 
-### Artificial mixtures
+### Virtual mixtures
 
 To assess modelling accuracy we generate virtual mixtures with known
 source contribution. First, we generate contribution with
@@ -598,8 +606,6 @@ for(method in names(all.tracers)){
 Run models
 
 ``` r
-#  note if "Error: .onload ... 'rgags' -> it's because R version is too old need at least R.2.2
-
 jags.VM <- list()
 jags.actual <- list()
 
@@ -935,18 +941,17 @@ BMM.accuracy
     ## 2 Median   Forest -0.07 0.20 0.56 0.50    0.311    0.640    0.1126
     ## 3 Median  Subsoil  0.01 0.13 0.80 0.79    0.285    0.629    0.0811
     
-The function *fingR::esp.values* calculate the number of samples that fell
+The function *fingR::ESP* calculate the number of samples that fell
 inside of the space of the virtual mixture predicted contributions
 
 ``` r
-
-fingR::esp.values(obs = VM.contrib,
-                  pred = read.csv(paste0(save.dir.fingR, path.model, paste0("MixSIAR_VM_", method, "/"), paste0("MixSIAR_prevision_VM_", method, ".csv"))),
-                  sources = c("Cropland","Forest","Subsoil"),
-                  #sources.obs = c("Cropland","Forest","Subsoil"), #if source labels differ in obs and pred, indicate them
-                  #sources.pred = c("Cropland","Forest","Subsoil"),
-                  count = FALSE, #return percentage when FALSE (default) and count when TRUE. Or both if user want both
-                  digits = 0)
+fingR::ESP(obs = VM.contrib,
+           pred = read.csv(paste0(save.dir.fingR, path.model, paste0("MixSIAR_VM_", method, "/"), paste0("MixSIAR_prevision_VM_", method, ".csv"))),
+           sources = c("Cropland","Forest","Subsoil"),
+           #sources.obs = c("Cropland","Forest","Subsoil"), #if source labels differ in obs and pred, indicate them
+           #sources.pred = c("Cropland","Forest","Subsoil"),
+           count = FALSE, #return percentage when FALSE (default) and count when TRUE. Or both if user want both
+           digits = 0)
 ```
 
 # References
@@ -958,9 +963,8 @@ fingR::esp.values(obs = VM.contrib,
   properties of potential source material, target sediment and
   laboratory mixtures for conducting sediment fingerprinting approaches
   in the Mano Dam Reservoir (Hayama Lake) catchment, Fukushima
-  Prefecture, Japan. (Version 1) \[Data set\]. Zenodo.
-  \[10.5281/zenodo.7081094>\]
-- Chalaux-Clergue, T., Bizeul, R., Batista, P. V. G., Martinez-
-  Carreras,  N., Laceby, J. P., and Evrard, O.: Sensitivity of source 
-  sediment fingerprinting modelling to tracer selection methods,
-  EGUsphere [preprint], https://doi.org/10.5194/egusphere-2023-1970, 2023. 
+  Prefecture, Japan. (Version 1) [Data set]. https://doi.org/10.5281/zenodo.10044404
+- Chalaux-Clergue, Thomas, Rémi Bizeul, Pedro V. G. Batista, Núria Martínez-
+  Carreras, J. Patrick Laceby, and Olivier Evrard.: Sensitivity of Source 
+  Sediment Fingerprinting to Tracer Selection Methods’. SOIL 10, no. 1 (13
+  February 2024): 109–38. https://doi.org/10.5194/soil-10-109-2024.
