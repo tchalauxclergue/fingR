@@ -1,4 +1,4 @@
-#' graph.crps
+#' Graphic representation of CRPS
 #'
 #' Draw source groups observed contributions by CRPS values.
 #'

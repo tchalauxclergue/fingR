@@ -1,4 +1,4 @@
-#' lvl.signif
+#' Significance level
 #'
 #' Return the significant figures level of a numeric or the highest level of a vector of numerics.
 #'

@@ -17,7 +17,7 @@ RT.median <- function(target, sources, class, alternative = "single"){
   property <- dplyr::setdiff(colnames(sources), class) #get the property label
   lvl <- fingR::lvl.signif(sources[[property]])
 
-  # sources mean
+  # sources median
   source.bounds <- as.data.frame(sources) %>%
     dplyr::group_by(.data[[class]]) %>%
     dplyr::summarise(dplyr::across(.cols = dplyr::all_of(property), .fns = list(stats::median)))
