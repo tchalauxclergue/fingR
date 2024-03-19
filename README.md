@@ -45,18 +45,21 @@ issue, send an email to [Thomas Chalaux-Clergue and Rémi
 Bizeul](mailto:thomaschalaux@icloud.com,%20rbizeul59@gmail.com).
 
 Install the package from a local directory after downloading the tar.gz
-file:
+file from Zenodo or Github:
 
 ``` r
 # install the fingR package from a local directory
-devtools::install_local("path_to_file/fingR_1.1.0.tar.gz", repos = NULL)
+install.packages("devtools")
+devtools::install_local("path_to_file/fingR_1.1.1.tar.gz", repos = NULL)
 ```
 
-or from GitHub (version 1.1.0)
+or from GitHub (version 1.1.1)
 
 ``` r
-devtools::install_github("https://github.com/tchalauxclergue/fingR/releases/tag/1.1", ref = "master", force = T)
+install.packages("devtools")
+devtools::install_github("https://github.com/tchalauxclergue/fingR/releases/tag/1.1.1", ref = "master", force = T)
 ```
+Then charge the package
 
 ``` r
 library(fingR)
