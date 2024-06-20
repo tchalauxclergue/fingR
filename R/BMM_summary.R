@@ -1,3 +1,18 @@
+#' Summarize the results of BMM predictions
+#' 
+#' @param pred A data frame containing the predicted values from a mixing model.
+#' @param sample.id A character specifying the column name in 'pred' containing sample identifiers.
+#' @param source A character specifying the column name in 'pred' containing source identifiers.
+#' @param value A character specifying the column name in 'pred' containing predicted values.
+#' @param save.dir Connection open for writing the test results data.frame. If "" save the file at working directory.
+#' @param note A character string to add a note at the end of the file name (not set - default).
+#' @param fileEncoding character string, if non-empty declares the encoding to be used on a file (not a connection) so the character data can be re-encoded as they are written, "latin1" (default).
+#' 
+#' @returns A data frame containing summary statistics for the predicted values.
+#' 
+#' @author Thomas Chalaux-Clergue
+#' 
+#' @export
 BMM.summary <- function(pred, sample.id, source, value, save.dir, note, fileEncoding = "latin1"){
 
   library(dplyr)

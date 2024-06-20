@@ -2,7 +2,7 @@
 % Please edit documentation in R/graph_crps.R
 \name{graph.crps}
 \alias{graph.crps}
-\title{graph.crps}
+\title{Graphic representation of CRPS}
 \usage{
 graph.crps(
   obs,

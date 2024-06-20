@@ -31,6 +31,11 @@ CRPS <- function(obs, prev, sample.name.obs, sample.name.prev, prev.source.name,
     source.groups <- colnames(obs)[2:ncol(obs)]
   }
 
+  # correct proportions
+  if(max(obs[,source.groups]) > 1 & !(max(prev[[prev.values]]) > 1)){
+    obs[,source.groups] <- obs[,source.groups] / 100
+  }
+  
   #for each sample
   CRPS.df <- as.data.frame(obs[[sample.name.obs]])
   for(group in source.groups){
@@ -58,7 +63,7 @@ CRPS <- function(obs, prev, sample.name.obs, sample.name.prev, prev.source.name,
 
   # saving
   if(!missing(save.dir)){
-    file.name <- "MixSIAR_crps"
+    file.name <- "CRPS"
     if(!missing(note)){
       file.name <- paste(file.name, note, sep = "_")
     }

@@ -11,6 +11,7 @@
 #' @param p.level p-value threshold to reject null hypothesis (H0) (0.05 - default).
 #' @param min.discriminant A numeric value of the lowest number of sources couples that need to be statistically different to consider the property as discriminant (1 - default). Only for Kolmogorov-Smirnov ("KS").
 #' @param save.discrim.tests Logical. If TRUE (default) save the data.frame of all sources pairs tests.
+#' @param return.test Logical. If TRUE (FALSE set as default) return both the Kolmogorov-Smirnov statistics per groups and general results
 #' @param save.dir Connection open for writing the test results data.frame, "" save the file at working directory, if not set (default) the data.frame is not saved.
 #' @param note A character string to add a note at the end of the file name (not set - default).
 #' @param fileEncoding Character string, if non-empty declares the encoding to be used on a file (not a connection) so the character data can be re-encoded
@@ -21,7 +22,7 @@
 #' @author Thomas Chalaux-Clergue & Rémi Bizeul
 #'
 #' @export
-discriminant.test <- function(data, class, mixture, properties, test, p.level = .05, min.discriminant = 1, save.discrim.tests = TRUE, save.dir, note, fileEncoding = "latin1"){
+discriminant.test <- function(data, class, mixture, properties, test, p.level = .05, min.discriminant = 1, save.discrim.tests = TRUE, return.tests = FALSE, save.dir, note, fileEncoding = "latin1"){
 
   require(dplyr)
   require(utils)
@@ -55,6 +56,14 @@ discriminant.test <- function(data, class, mixture, properties, test, p.level = 
     if(!missing(note)){ file.name <- paste(file.name, test, note, sep = "_") } # user note
     utils::write.csv(results.df, file = paste0(save.dir, paste0(file.name, ".csv")), na = "", row.names = FALSE, fileEncoding = fileEncoding) # saving results data.frame
   }
+  
+  # Choose what to return
+  if(isTRUE(return.tests)){
+    to.return <- list(result.KS, results.df)
+    names(to.return) <- c("result.KS", "results.df")
+  }else{
+    to.return <- results.df
+  }
 
-  return(results.df)
+  return(to.return)
 }

@@ -13,6 +13,7 @@ discriminant.test(
   p.level = 0.05,
   min.discriminant = 1,
   save.discrim.tests = TRUE,
+  return.tests = FALSE,
   save.dir,
   note,
   fileEncoding = "latin1"
@@ -41,6 +42,8 @@ discriminant.test(
 
 \item{fileEncoding}{Character string, if non-empty declares the encoding to be used on a file (not a connection) so the character data can be re-encoded
 as they are written, "latin1" (default).}
+
+\item{return.test}{Logical. If TRUE (FALSE set as default) return both the Kolmogorov-Smirnov statistics per groups and general results}
 }
 \value{
 data.frame. The results of the different test.

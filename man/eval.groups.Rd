@@ -27,5 +27,5 @@ Calculate prediction quality statistics index to assess model prediction quality
 Call *fingR::eval.mix* function for the calculation of prediction statistics.
 }
 \author{
-Thomas Chalaux-Clergue & Rémi Bizeul
+Thomas Chalaux-Clergue
 }

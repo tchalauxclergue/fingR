@@ -7,13 +7,13 @@
 combinations(x)
 }
 \arguments{
-\item{x}{a character vector of types/class.}
+\item{x}{A character vector containing elements to combine.}
 }
 \value{
-a character vector of combination.
+A character vector containing combinations of elements in 'x' separated by "-".
 }
 \description{
-Return the list of given type/class unique combinations.
+Generate combinations of elements in a vector
 }
 \author{
 Thomas Chalaux-Clergue

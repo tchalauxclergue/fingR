@@ -29,8 +29,8 @@ RT.median <- function(target, sources, class, alternative = "single"){
 
   if(alternative == "single"){ # for each target sample
     resu <- list()
-    resu[["sample.RT"]] <- bound.s[1] <= target & target <= bound.s[2]
-    resu[["RT.pass"]] <- !(FALSE %in% resu[["sample.RT"]])
+    resu[["sample.RT"]] <- base::ifelse(bound.s[2] < target, "high", base::ifelse(target < bound.s[1], "low", TRUE))
+    resu[["RT.pass"]] <- !(FALSE %in% c(bound.s[1] <= target & target <= bound.s[2])) # check if all are TRUE
 
   }else if(alternative == "population"){ # consider target as a population
     resu <- bound.s[1] <= round(stats::median(target), lvl+3) & round(stats::median(target), lvl+3) <= bound.s[2]

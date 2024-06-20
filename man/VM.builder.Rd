@@ -2,7 +2,7 @@
 % Please edit documentation in R/VM_builder.R
 \name{VM.builder}
 \alias{VM.builder}
-\title{Virtual mixtures property values generator}
+\title{VM.builder}
 \usage{
 VM.builder(
   data,
@@ -10,8 +10,12 @@ VM.builder(
   source.name = "Source",
   class,
   tracers,
+  uncertainty,
   contributions,
+  VM.range,
+  VM.step,
   VM.name,
+  add.sources = FALSE,
   Normal.distrib.samples = FALSE,
   multivar = FALSE,
   n.norm = 2500,
@@ -23,49 +27,54 @@ VM.builder(
 )
 }
 \arguments{
-\item{data}{A data.frame containing all the source properties values, material and class.}
+\item{data}{A data frame containing the dataset.}
 
-\item{material}{A character string corresponding to the column where the source samples can be differentiate from other samples.}
+\item{material}{A character string specifying the name of the material column in the dataset.}
 
-\item{source.name}{A character string corresponding to the way source samples are named in 'material': "Source" (default).}
+\item{source.name}{A character string specifying the name of the source material. Default is "Source".}
 
-\item{class}{A character string corresponding to the column that contains the sources classification groups (source A, source B...) and target.}
+\item{class}{A character string specifying the column name for the class.}
 
-\item{tracers}{A vector listing all the tracers column names.}
+\item{tracers}{A character vector specifying the tracer columns to be used.}
 
-\item{contributions}{A data.frame with the artificial mixture source groups contributions (from 0 to 1). If not set proportions will be generated according to the 'step'.}
+\item{uncertainty}{A character vector specifying the uncertainty columns, if available.}
 
-\item{VM.name}{A character string corresponding to the column where artificial mixture are labelled.}
+\item{contributions}{A data frame specifying the contribution of each source. If missing, contributions are generated.}
 
-\item{Normal.distrib.samples}{description}
+\item{VM.range}{A numeric vector of length 2 specifying the range of contributions.}
 
-\item{multivar}{A boolean, TRUE to generate multivariate normal distribution of source properties (FALSE, default).}
+\item{VM.step}{A numeric value specifying the step size for the contributions.}
 
-\item{n.norm}{A numeric value corresponding the number of samples generated.}
+\item{VM.name}{A character string specifying the name for the virtual mixture column.}
 
-\item{step}{A numeric value indicating the step between two contributions, between 0 and 1 (default: 0.1).}
+\item{add.sources}{A logical value indicating whether to add source samples to the virtual mixtures. Default is FALSE.}
 
-\item{save.dir}{Connection open for saving artificial mixtures property values and standard deviation (SD) data.frames. If "" save the file at working directory, if not set (default) the data.frame is not saved.}
+\item{Normal.distrib.samples}{A logical value indicating whether to generate normal distributed samples. Default is FALSE.}
 
-\item{note}{A character string to add a note at the end of the file name (not set - default).}
+\item{multivar}{A logical value indicating whether to use multivariate normal distribution for samples. Default is FALSE.}
 
-\item{RETURN}{A boolean, when set to TRUE (default) return the artificial mixture property values. Set to FALSE for no return from the function.}
+\item{n.norm}{An integer specifying the number of normal distributed samples to generate. Default is 2500.}
 
-\item{fieEncoding}{Character string, if non-empty declares the encoding to be used on a file (not a connection) so the character data can be re-encoded
-as they are written, "latin1" (default).}
+\item{step}{A numeric value specifying the step size for normal distributed samples. Default is 0.1.}
+
+\item{save.dir}{A character string specifying the directory to save the results. If missing, results are not saved.}
+
+\item{note}{A character string specifying additional notes for the saved files.}
+
+\item{fileEncoding}{A character string specifying the file encoding. Default is "latin1".}
+
+\item{RETURN}{A logical value indicating whether to return the results. Default is TRUE.}
 }
 \value{
-A list of two data.frame: artificial mixtures *property* values and artificial mixtures properties measurement *uncertainty*.
+A list of three data frames:
+\describe{
+  \item{property}{A data frame with the property values of the virtual mixtures.}
+  \item{uncertainty}{A data frame with the uncertainty values of the virtual mixtures.}
+  \item{full}{A data frame with the combined property and uncertainty values of the virtual mixtures.}
+}
 }
 \description{
-Generate artificial mixture property values according to source samples properties.
-}
-\details{
-Virtual mixture properties values are determined according to the multiplication of each source distribution (%) and a randomly selected value among the Normal distributed
-samples (n = n.norm). Normal distributed samples are generated according to each source group characteristics (mean and standard deviation) within the *fingR::source.norm.distrib* function.
-}
-\references{
-Batista, P. V. G., Laceby, J. P., & Evrard, O. (2022). How to evaluate sediment fingerprinting source apportionments. Journal of Soils and Sediments, 22(4), 1315-1328.
+This function generates virtual mixtures (VM) for sediment source fingerprinting studies. It can create normal distributed samples or simple proportional mixtures of source signatures. The results include property values, uncertainty values, and combined data frames. The function allows for saving the results and adding source samples to the virtual mixtures.
 }
 \author{
 Thomas Chalaux-Clergue

@@ -25,7 +25,7 @@ data.for.MixSIAR(
 
 \item{tracers}{A vector listing the tracers names.}
 
-\item{sample.name}{A character string correspond to samples id/name column}
+\item{sample.name}{A character string correspond to samples id/name column.}
 
 \item{save.dir}{Connection open for writing the test results data.frame. If "" save the file at working directory.}
 
@@ -37,7 +37,7 @@ as they are written, "latin1" (default).}
 \item{show.data}{A boolean, if FALSE data.frame are saved but not returned.}
 }
 \description{
-Generate mix and source CSV files compatible with MixSIAR data loading functions (i.e. *load_mix_data* and *load_source_data*).
+Generate mix and source CSV files compatible with MixSIAR data loading functions (i.e. *MixSIAR::load_mix_data* and *MixSIAR::load_source_data*).
 }
 \author{
 Thomas Chalaux-Clergue

@@ -2,18 +2,31 @@
 % Please edit documentation in R/ESP.R
 \name{ESP}
 \alias{ESP}
-\title{Encompassed sample prediction}
+\title{Encompassed sample predictions}
 \usage{
-ESP(s1, s2)
+ESP(
+  obs,
+  pred,
+  sources,
+  sources.obs,
+  sources.pred,
+  count = FALSE,
+  digits = 0,
+  split = "_",
+  source.pos
+)
 }
 \arguments{
-\item{s1, s2}{Two vectors containing numerical values}
-}
-\value{
-Numerical percentage of coverage.
+\item{obs, pred}{Two data.frame containing numerical values.}
+
+\item{sources, source.obs, sources.pred}{Character or vector of character indicating the column(s) that contains source labels. If source labels differ in obs and pred, indicate them.}
+
+\item{count}{Boolean or Character. Return percentage when FALSE (default) and count when TRUE. Or "Both" if user want both.}
+
+\item{digits}{Integer indicating the number of decimal places (round) or significant digits (signif) to be used. For round, negative values are allowed (see base::Round for more details).}
 }
 \description{
-Calculate the number of elements from s1 that lies within the s2 range.
+Calculate the number of elements from prediction (pred) that lies within the observed (obs) range for each source
 }
 \author{
 Thomas Chalaux-Clergue

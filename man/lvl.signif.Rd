@@ -2,7 +2,7 @@
 % Please edit documentation in R/lvl_signif.R
 \name{lvl.signif}
 \alias{lvl.signif}
-\title{lvl.signif}
+\title{Significance level}
 \usage{
 lvl.signif(x)
 }

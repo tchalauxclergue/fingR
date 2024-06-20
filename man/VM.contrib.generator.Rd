@@ -2,43 +2,51 @@
 % Please edit documentation in R/VM_contrib_generator.R
 \name{VM.contrib.generator}
 \alias{VM.contrib.generator}
-\title{Virtual mixtures proportion generator}
+\title{VM.contrib.generator}
 \usage{
 VM.contrib.generator(
   n.sources,
-  groups,
-  step = 0.1,
+  min = 0,
+  max = 100,
+  step = 5,
+  sources.class,
+  VM.name = "Sample_name",
   save.dir,
   note,
-  fileEncoding = "latin1"
+  fileEncoding = "latin1",
+  return = TRUE,
+  save = TRUE
 )
 }
 \arguments{
-\item{n.sources}{A numeric value indicating the number of source groups.}
+\item{n.sources}{Integer. The number of source levels (from 2 to 4).}
 
-\item{groups}{A vector listing source groups names}
+\item{min}{Numeric. Minimum contribution value (default is 0).}
 
-\item{step}{A numeric value indicating the step between two contributions, between 0 and 1 (default: 0.1).}
+\item{max}{Numeric. Maximum contribution value (default is 100).}
 
-\item{save.dir}{A connection open for saving artificial mixtures property values and standard deviation (SD) data.frames. If "" save the file at working directory, if not set (default) the data.frame is not saved.}
+\item{step}{Numeric. Step between two contribution levels (default is 5).}
 
-\item{note}{A character string to add a note at the end of the file name (not set - default).}
+\item{sources.class}{Character vector. Optional names for the source classes.}
 
-\item{fileEncoding}{Character string, if non-empty declares the encoding to be used on a file (not a connection) so the character data can be re-encoded
-as they are written, "latin1" (default).}
+\item{VM.name}{Character. Name of the column containing virtual mixture labels (default is "Sample_name").}
+
+\item{save.dir}{Connection open for saving artificial mixtures property values and standard deviation (SD) data.frames. If "" save the file at working directory, if not set (default) the data.frame is not saved.}
+
+\item{note}{Character. Optional additional note to append to the file name.}
+
+\item{return}{Logical. Whether to return the result matrix (Default is TRUE).}
+
+\item{save}{Logical. Whether to save the result matrix to a file (Default is TRUE).}
+
+\item{fieEncoding}{Character string, if non-empty declares the encoding to be used on a file (not a connection) so the character data can be re-encoded
+as they are written (default is "latin1").}
 }
 \value{
-A data.frame with artificial mixture source contributions.
+A matrix (or data frame) of virtual mixture contributions if \code{return} is set to TRUE.
 }
 \description{
-Generate proportion for artificial mixture according to the number of source groups, from 2 to 5.
-}
-\details{
-Contributions are generated according to a scale range from 0 to 100% contribution for a source, with the *step* increments.
-The other groups are determined as fractions of the remaining contribution (i.e. 1 - source A contribution) with decreasing importance of groups.
-The value of the fraction is determined by the number of sources. The denominator is defined as: (number of sources - 1) * 2.
-The numerator values are set according to the number groups: 3 groups - 3 and 1, 4 groups - 3, 2 and 1, 5 groups - 4, 3, 2 and 1.
-Then, the permutation of this contribution scale are determine.
+Generates a matrix of virtual mixture source contributions based on specified parameters.
 }
 \author{
 Thomas Chalaux-Clergue

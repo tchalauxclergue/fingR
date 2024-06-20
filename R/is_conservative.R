@@ -18,6 +18,13 @@
 is.conservative <- function(data, property, test.format = "RT", crit.pos = 2, sep.format = "_", note){
   tests <- colnames(data)[grepl(test.format, colnames(data))] #get test column names
 
+  if( setequal(colnames(data)[1:4], c("Property", "n_source", "n_mixture", "NAs")) ){
+    property = "Property"
+    test.format = "RT"
+    crit.pos = 2
+    sep.format = "_"
+  }
+  
   resu <- list()
   for(test in tests){
     resu[[unlist(strsplit(test, split = sep.format))[crit.pos]]] <- data[which(data[[test]] == "TRUE"), property]

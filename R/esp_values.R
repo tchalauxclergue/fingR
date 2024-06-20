@@ -6,7 +6,7 @@
 #' @param count Boolean. Return percentage when FALSE (default) and count when TRUE.
 #' @param digits Integer indicating the number of decimal places (round) or significant digits (signif) to be used. For round, negative values are allowed (see base::Round for more details).
 #'
-#' @author Thomas Chalaux-Clergue & Rémi Bizeul
+#' @author Thomas Chalaux-Clergue
 #' @export
 esp.values <- function(pred, obs, count = FALSE, digits = 0){
   n <- 0

@@ -1,36 +1,42 @@
-#' Virtual mixtures property values generator
+#' VM.builder
 #'
-#' Generate artificial mixture property values according to source samples properties.
+#' This function generates virtual mixtures (VM) for sediment source fingerprinting studies. It can create normal distributed samples or simple proportional mixtures of source signatures. The results include property values, uncertainty values, and combined data frames. The function allows for saving the results and adding source samples to the virtual mixtures.
 #'
+#' @param data A data frame containing the dataset.
+#' @param material A character string specifying the name of the material column in the dataset.
+#' @param source.name A character string specifying the name of the source material. Default is "Source".
+#' @param class A character string specifying the column name for the class.
+#' @param tracers A character vector specifying the tracer columns to be used.
+#' @param uncertainty A character vector specifying the uncertainty columns, if available.
+#' @param contributions A data frame specifying the contribution of each source. If missing, contributions are generated.
+#' @param VM.range A numeric vector of length 2 specifying the range of contributions. 
+#' @param VM.step A numeric value specifying the step size for the contributions.
+#' @param VM.name A character string specifying the name for the virtual mixture column.
+#' @param add.sources A logical value indicating whether to add source samples to the virtual mixtures. Default is FALSE.
+#' @param Normal.distrib.samples A logical value indicating whether to generate normal distributed samples. Default is FALSE.
+#' @param multivar A logical value indicating whether to use multivariate normal distribution for samples. Default is FALSE.
+#' @param n.norm An integer specifying the number of normal distributed samples to generate. Default is 2500.
+#' @param step A numeric value specifying the step size for normal distributed samples. Default is 0.1.
+#' @param save.dir A character string specifying the directory to save the results. If missing, results are not saved.
+#' @param note A character string specifying additional notes for the saved files.
+#' @param fileEncoding A character string specifying the file encoding. Default is "latin1".
+#' @param RETURN A logical value indicating whether to return the results. Default is TRUE.
 #'
-#' Virtual mixture properties values are determined according to the multiplication of each source distribution (%) and a randomly selected value among the Normal distributed
-#' samples (n = n.norm). Normal distributed samples are generated according to each source group characteristics (mean and standard deviation) within the *fingR::source.norm.distrib* function.
+#' @return A list of three data frames:
+#' \describe{
+#'   \item{property}{A data frame with the property values of the virtual mixtures.}
+#'   \item{uncertainty}{A data frame with the uncertainty values of the virtual mixtures.}
+#'   \item{full}{A data frame with the combined property and uncertainty values of the virtual mixtures.}
+#' }
 #'
-#' @param data A data.frame containing all the source properties values, material and class.
-#' @param material A character string corresponding to the column where the source samples can be differentiate from other samples.
-#' @param source.name A character string corresponding to the way source samples are named in 'material': "Source" (default).
-#' @param class A character string corresponding to the column that contains the sources classification groups (source A, source B...) and target.
-#' @param tracers A vector listing all the tracers column names.
-#' @param contributions A data.frame with the artificial mixture source groups contributions (from 0 to 1). If not set proportions will be generated according to the 'step'.
-#' @param VM.name A character string corresponding to the column where artificial mixture are labelled.
-#' @param Normal.distrib.samples description
-#' @param multivar A boolean, TRUE to generate multivariate normal distribution of source properties (FALSE, default).
-#' @param n.norm A numeric value corresponding the number of samples generated.
-#' @param step A numeric value indicating the step between two contributions, between 0 and 1 (default: 0.1).
-#' @param save.dir Connection open for saving artificial mixtures property values and standard deviation (SD) data.frames. If "" save the file at working directory, if not set (default) the data.frame is not saved.
-#' @param note A character string to add a note at the end of the file name (not set - default).
-#' @param fieEncoding Character string, if non-empty declares the encoding to be used on a file (not a connection) so the character data can be re-encoded
-#' as they are written, "latin1" (default).
-#' @param RETURN A boolean, when set to TRUE (default) return the artificial mixture property values. Set to FALSE for no return from the function.
-#'
-#' @returns A list of two data.frame: artificial mixtures *property* values and artificial mixtures properties measurement *uncertainty*.
-#'
+#' @import reshape2
+#' @import tibble
+#' @import dplyr
+#' 
 #' @author Thomas Chalaux-Clergue
-#'
-#' @references Batista, P. V. G., Laceby, J. P., & Evrard, O. (2022). How to evaluate sediment fingerprinting source apportionments. Journal of Soils and Sediments, 22(4), 1315-1328.
-#'
+#' 
 #' @export
-VM.builder <- function(data, material, source.name = "Source", class, tracers, contributions, VM.name, Normal.distrib.samples = FALSE, multivar = FALSE, n.norm = 2500, step = .1, save.dir, note, fileEncoding = "latin1", RETURN = TRUE){
+VM.builder <- function(data, material, source.name = "Source", class, tracers, uncertainty, contributions, VM.range, VM.step, VM.name, add.sources = FALSE, Normal.distrib.samples = FALSE, multivar = FALSE, n.norm = 2500, step = .1, save.dir, note, fileEncoding = "latin1", RETURN = TRUE){
 
   require(reshape2)
   require(tibble)
@@ -41,16 +47,21 @@ VM.builder <- function(data, material, source.name = "Source", class, tracers, c
     dplyr::filter(.data[[material]] == source.name) %>% # select rows with source as material
     as.data.frame()
 
+  sources <- data %>%
+    dplyr::filter(.data[[material]] == source.name) %>% 
+    dplyr::select(dplyr::all_of(class)) %>% unlist %>% as.factor %>% levels
+  
   # If no contributions are given
   if(missing(contributions)){
-    sources <- data %>%
-      dplyr::filter(.data[[material]] == source.name) %>%
-      dplyr::select(dplyr::all_of(class)) %>% unlist() %>% as.factor() %>% levels() # get source labels
-
-    contributions <- fingR::VM.contrib.generator(n.sources = length(sources), groups = sources, step = step, save.dir = save.dir, note = note, fileEncoding = fileEncoding)
+    contributions <- fingR::VM.contrib.generator(n.sources = length(sources), min = VM.range[1], max = VM.range[2], step = VM.step, sources.class = sources, VM.name = VM.name, fileEncoding = fileEncoding,  return = TRUE, save = FALSE)
     VM.name <- colnames(contributions)[1]
   }
 
+  # manage contribution levels as rate and not percentage
+  if(max(contributions[, sources]) > 1){
+    contributions[, sources] <- contributions[, sources]/100
+  }
+  
   # generate property values
   if(isTRUE(Normal.distrib.samples)){  # to generate normal distributed samples property value
 
@@ -76,32 +87,58 @@ VM.builder <- function(data, material, source.name = "Source", class, tracers, c
     math.mix <- math.mix[order(math.mix[[1]], decreasing = FALSE),]
     math.mix.sd <- math.mix.sd[order(math.mix.sd[[1]], decreasing = FALSE),]
 
-  }else{ # to generate VM property values that are simple multiplication
+  }else{ # Generate VM property values that are simple multiplication
     resu <- fingR::VM.proportionate.prop.values(data = df.sources, class = class, tracers = tracers, contributions = contributions, VM.name = VM.name)
     math.mix <- resu[[1]]
     math.mix.sd <- resu[[2]]
   }
-
-  #saving artificial mixture properties
+  
+  # Add the class to virtual mixtures data.frames
+  math.mix <- math.mix %>% dplyr::mutate(!!class := "Virtual Mixture") %>% dplyr::relocate(class, .after = !!all_of(VM.name))
+  math.mix.sd <- math.mix.sd %>% dplyr::mutate(!!class := "Virtual Mixture") %>% dplyr::relocate(class, .after = !!all_of(VM.name))
+  
+  
+  # Correct sd names if uncertainty labels were set
+  if(!missing(uncertainty)){
+    colnames(math.mix.sd)[which(!colnames(math.mix.sd) %in% c(VM.name, class))] <- uncertainty
+  }
+  
+  # Define the suffix if no uncertainty labels were set
+  if(!missing(uncertainty)){
+    VM.suffix <- c("", "")
+  }else{
+    VM.suffix <- c("", "_SD") # uncertainties are simply label as SD
+  }
+  
+  math.full <- dplyr::left_join(math.mix, math.mix.sd, by = VM.name, suffix = VM.suffix) # join mixture values and uncertainty values
+  
+  # Add source samples at the end of all the data frames
+  if(isTRUE(add.sources)){
+    math.mix <- dplyr::rows_append(math.mix,  data %>% dplyr::filter(.data[[material]] == source.name) %>%   dplyr::select(dplyr::all_of(colnames(math.mix))))
+    math.mix.sd <- dplyr::rows_append(math.mix.sd,  data %>% dplyr::filter(.data[[material]] == source.name) %>%   dplyr::select(dplyr::all_of(colnames(math.mix.sd))))
+    math.full <- dplyr::rows_append(math.full,  data %>% dplyr::filter(.data[[material]] == source.name) %>%   dplyr::select(dplyr::all_of(colnames(math.full))))
+  }
+  
+  # Saving virtual mixtures properties
   if(!missing(save.dir)){
     file.name1 <- "VM_properties"
     file.name2 <- "VM_properties_SD"
+    file.name3 <- "VM_properties_full"
     if(!missing(note)){
       file.name1 <- paste(file.name1, note, sep="_")
       file.name2 <- paste(file.name2, note, sep="_")
+      file.name3 <- paste(file.name3, note, sep="_")
     }
-
-    utils::write.csv(math.mix, paste0(save.dir, paste0(file.name1, ".csv")), row.names = F, fileEncoding = fileEncoding)
-    utils::write.csv(math.mix.sd, paste0(save.dir, paste0(file.name2, ".csv")), row.names = F, fileEncoding = fileEncoding)
+    utils::write.csv(math.mix, paste0(save.dir, paste0(file.name1, ".csv")), row.names = FALSE, fileEncoding = fileEncoding)
+    utils::write.csv(math.mix.sd, paste0(save.dir, paste0(file.name2, ".csv")), row.names = FALSE, fileEncoding = fileEncoding)
+    utils::write.csv(math.full, paste0(save.dir, paste0(file.name3, ".csv")), row.names = FALSE, fileEncoding = fileEncoding)
   }
 
-  result <- list(math.mix, math.mix.sd)
-  names(result) <- c("property", "uncertainty")
+  result <- list(math.mix, math.mix.sd, math.full)
+  names(result) <- c("property", "uncertainty", "full")
 
 
   if(isTRUE(RETURN)){
     return(result)
   }
 }
-
-

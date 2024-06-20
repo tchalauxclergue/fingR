@@ -2,7 +2,7 @@
 % Please edit documentation in R/pval_signif.R
 \name{pval.signif}
 \alias{pval.signif}
-\title{pval.signif}
+\title{Significance of p value}
 \usage{
 pval.signif(p.value)
 }
@@ -13,12 +13,12 @@ pval.signif(p.value)
 character significance code.
 }
 \description{
-Returns p-value signif level significance level code.
-0.10 < p-value - ""
-0.05 < p-value < 0.10 - "."
-0.01 < p-value < 0.05 - "*"
-0.001 < p-value < 0.01 - "**"
-p-value < 0.001 - "***"
+Returns p value signif level significance level code.
+0.10 < p value - " "
+0.05 < p value < 0.10 - "."
+0.01 < p value < 0.05 - "*"
+0.001 < p value < 0.01 - "**"
+p value < 0.001 - "***"
 }
 \author{
 Thomas Chalaux-Clergue & Rémi Bizeul

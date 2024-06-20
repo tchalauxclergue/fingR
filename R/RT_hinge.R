@@ -30,11 +30,14 @@ RT.hinge <- function(target, sources, class, h.range, alternative = "single"){
 
   if(alternative == "single"){ # for each target sample
     resu <- list()
-    resu[["sample.RT"]] <- bound.s[1] <= target & target <= bound.s[2]
-    resu[["RT.pass"]] <- !(FALSE %in% resu[["sample.RT"]])
-
+    resu[["sample.RT"]] <- base::ifelse(bound.s[2] < target, "high", base::ifelse(target < bound.s[1], "low", TRUE))
+    resu[["RT.pass"]] <- !(FALSE %in% c(bound.s[1] <= target & target <= bound.s[2])) # check if all are TRUE
+    
   }else if(alternative == "population"){ # consider target as a population
     resu <- unname(bound.s[1] <= round(stats::quantile(target, prob.hinge[1]),lvl) & round(stats::quantile(target, prob.hinge[2]),lvl) <= bound.s[2])
   }
   return(resu)
 }
+
+target <- c(1, 2, 3, 4, 5, 6)
+bound.s <- c(2, 5)

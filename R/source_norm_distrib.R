@@ -56,8 +56,9 @@ source.norm.distrib <- function(data, class, tracers, n = 2500, multivar = FALSE
 
   mean.sources <- MND.sources[,c(1)]
   MND.sources.L <- mget(mean.sources)
-
+  
   to.return <- list(c(mean.sources), c(MND.sources.L))
+  names(to.return) <- c("levels", "values")
 
   return(to.return)
 }

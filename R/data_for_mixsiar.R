@@ -1,12 +1,12 @@
 #' Generate CSV for MixSIAR
 #'
-#' Generate mix and source CSV files compatible with MixSIAR data loading functions (i.e. *load_mix_data* and *load_source_data*).
+#' Generate mix and source CSV files compatible with MixSIAR data loading functions (i.e. *MixSIAR::load_mix_data* and *MixSIAR::load_source_data*).
 #'
 #' @param data A data.frame containing all the data values.
 #' @param class A character string corresponding to the column that contains the sources classes (source 1, source 2, etc) and target information.
 #' @param target A character string corresponding to the way "Target" (default) are named.
 #' @param tracers A vector listing the tracers names.
-#' @param sample.name A character string correspond to samples id/name column
+#' @param sample.name A character string correspond to samples id/name column.
 #' @param save.dir Connection open for writing the test results data.frame. If "" save the file at working directory.
 #' @param note A character string to add a note at the end of the file name (not set - default).
 #' @param fileEncoding character string, if non-empty declares the encoding to be used on a file (not a connection) so the character data can be re-encoded
@@ -70,19 +70,31 @@ data.for.MixSIAR <- function(data, class, target, tracers, sample.name, save.dir
   row.names(source.dt) <- levels(as.factor(sources[[class]]))
 
 
+  # discrimination levels / trophic levels
+  discrim.dt <- matrix(data = 0, # tracers are considered conservative
+                       nrow = nlevels(as.factor(sources[[class]])), # number of sources
+                       ncol = length(tracers)*2, # maximum number of selected tracers
+                       dimnames = list(levels(as.factor(sources[[class]])),
+                                       paste0(c("Mean", "SD"), rep(tracers, each = 2))) # generate prop names according to MixSIAR format (i.e. MeanPropertyA, SDPropertyA...)
+                       )
+  
+  
   # saving data
   mix.name <- "MixSIAR_mix"
   src.name <- "MixSIAR_sources"
+  discrim.name <- "MixSIAR_discrimination"
   if(!missing(note)){
     mix.name <- paste0(mix.name,"_", note)
     src.name <- paste0(src.name,"_", note)
+    discrim.name <- paste0(discrim.name,"_", note)
   }
   write.csv(mix.dt, paste0(save.dir, paste0(mix.name, ".csv")), row.names = F, fileEncoding=fileEncoding)
   write.csv(source.dt, paste0(save.dir, paste0(src.name, ".csv")), fileEncoding=fileEncoding)
+  write.csv(discrim.dt, paste0(save.dir, paste0(discrim.name, ".csv")), row.names = T, fileEncoding=fileEncoding)
 
   if(show.data == TRUE){
-    result <- list(mix.dt, source.dt)
-    names(result) <- c("mix", "sources")
+    result <- list(mix.dt, source.dt, discrim.dt)
+    names(result) <- c("mix", "sources", "discimination")
 
     return(result)
   }

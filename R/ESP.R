@@ -7,9 +7,10 @@
 #' @param count Boolean or Character. Return percentage when FALSE (default) and count when TRUE. Or "Both" if user want both.
 #' @param digits Integer indicating the number of decimal places (round) or significant digits (signif) to be used. For round, negative values are allowed (see base::Round for more details).
 #'
-#' @author Thomas Chalaux-Clergue & Rémi Bizeul
+#' @author Thomas Chalaux-Clergue
+#' 
 #' @export
-ESP <- function(obs, pred, sources, sources.obs, sources.pred, count = FALSE, digits = 0){
+ESP <- function(obs, pred, sources, sources.obs, sources.pred, count = FALSE, digits = 0, split = "_", source.pos){
 
   if(!missing(sources)){
     sources.obs <- sources
@@ -30,14 +31,24 @@ ESP <- function(obs, pred, sources, sources.obs, sources.pred, count = FALSE, di
   # arrange ESP values and name rows
   esp <- as.data.frame(esp.1)
   if(count == TRUE){
-    rownames(esp) <- "Number"
+    rownames(esp) <- "ESP.Number"
   }else{
-    rownames(esp) <- "Percentage"
+    rownames(esp) <- "ESP.Percentage"
   }
+  
   if(toupper(count) == "BOTH"){
     esp <- rbind(esp, as.data.frame(esp.2))
-    rownames(esp) <- c("Number", "Percentage")
+    rownames(esp) <- c("ESP.Number", "ESP.Percentage")
   }
-
+  
+  esp <- as.data.frame(t(esp))
+  
+  srcs <- c()
+  for(i in 1:nrow(esp)){
+    srcs <- c(srcs, unlist(strsplit(rownames(esp)[i], split = split))[2])
+  }
+  
+  esp <- cbind("Source" = srcs, esp)
+  
   return(esp)
 }

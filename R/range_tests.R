@@ -59,7 +59,7 @@ range.tests <- function(data, class, mixture = "target", properties, alternative
       colnames(results.RT) <- c(sample.id, "Property", "n_source", paste0("RT_", names(resu))) #correct col names
       if(save.each == TRUE){
         if(!missing(save.dir)){
-          file.name <- paste("Range_test", prop, alternative, sep = "_")
+          file.name <- paste("RT_samples", prop, alternative, sep = "_")
           if(!missing(note)){ # if the user add a note
             file.name <- paste(file.name, note, sep = "_") # if a note is added to the file name
           }

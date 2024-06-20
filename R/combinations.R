@@ -1,20 +1,24 @@
 #' Combination generator
 #'
-#' Return the list of given type/class unique combinations.
+#' Generate combinations of elements in a vector
 #'
-#' @param x a character vector of types/class.
+#' @param x A character vector containing elements to combine.
 #'
-#' @return a character vector of combination.
+#' @return A character vector containing combinations of elements in 'x' separated by "-".
 #'
 #' @author Thomas Chalaux-Clergue
 #'
 #' @export
 combinations <- function(x){
-  combs <- c()
-  for(i in 1:(length(x)-1)){ # from the 1st level to the last-1
-    for(j in (i+1):length(x)){ # from the 2nd level to the last
-      combs <- append(combs, paste(x[i], x[j], sep = "-")) # paste level i and level j (i.e A + B -> "A-B")
+  n <- length(x)
+  combs <- character(n * (n - 1) / 2) # Preallocate the 'combs' vector
+  k <- 1
+  for(i in 1:(n-1)){ # Iterate through each element in 'x' from the first to the second last
+    for(j in (i+1):n){ # Iterate through each element in 'x' from the element next to 'i' till the last
+      combs[k] <- paste(x[i], x[j], sep = "-") # Combine element i and element j with "-" separator
+      k <- k+1
     }
   }
   return(combs)
 }
+
