@@ -112,7 +112,7 @@ VM.builder <- function(data, material, source.name = "Source", class, tracers, u
     VM.suffix <- c("", "_SD") # uncertainties are simply label as SD
   }
   
-  math.full <- dplyr::left_join(math.mix, math.mix.sd, by = VM.name, suffix = VM.suffix) # join mixture values and uncertainty values
+  math.full <- dplyr::left_join(math.mix, math.mix.sd, by = dplyr::join_by(!!VM.name, !!class), suffix = VM.suffix) # join mixture values and uncertainty values
   
   # Add source samples at the end of all the data frames
   if(isTRUE(add.sources)){
@@ -120,11 +120,11 @@ VM.builder <- function(data, material, source.name = "Source", class, tracers, u
     
     if(!missing(uncertainty)){
       math.mix.sd <- dplyr::rows_append(math.mix.sd,  data %>% dplyr::filter(.data[[material]] == source.name) %>% dplyr::select(dplyr::all_of(colnames(math.mix.sd))))
+      math.full <- dplyr::rows_append(math.full,  data %>% dplyr::filter(.data[[material]] == source.name) %>% dplyr::select(dplyr::all_of(colnames(math.full))))
     }else{
-      math.mix.sd <- dplyr::rows_append(math.mix.sd,  data %>% dplyr::filter(.data[[material]] == source.name) %>% dplyr::select(dplyr::all_of(c(VM.name,class))))
+      math.mix.sd <- dplyr::rows_append(math.mix.sd,  data %>% dplyr::filter(.data[[material]] == source.name) %>% dplyr::select(dplyr::all_of(c(VM.name, class))))
+      math.full <- dplyr::rows_append(math.full,  data %>% dplyr::filter(.data[[material]] == source.name) %>% dplyr::select(dplyr::all_of(c(VM.name, class, tracers))))
     }
-    
-    math.full <- dplyr::rows_append(math.full,  data %>% dplyr::filter(.data[[material]] == source.name) %>% dplyr::select(dplyr::all_of(colnames(math.full))))
   }
   
   # Saving virtual mixtures properties
