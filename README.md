@@ -172,6 +172,9 @@ prop.values
 #>  [9] "EDXRF_K_mg.kg.1"  "EDXRF_Mg_mg.kg.1" "EDXRF_Mn_mg.kg.1" "EDXRF_Ni_mg.kg.1"
 #> [13] "EDXRF_Pb_mg.kg.1" "EDXRF_Rb_mg.kg.1" "EDXRF_Si_mg.kg.1" "EDXRF_Sr_mg.kg.1"
 #> [17] "EDXRF_Ti_mg.kg.1" "EDXRF_Zn_mg.kg.1" "EDXRF_Zr_mg.kg.1"
+```
+
+``` r
 
 unname(prop.uncertainties)
 #>  [1] "TOC_SD"        "TN_SD"         "EDXRF_Al_RMSE" "EDXRF_Ca_RMSE"
@@ -246,7 +249,9 @@ robust.
 The `range.test` function returns a list containing two data frames -
 *results.df*: A summary overview of the range test results. -
 *results.RT*: Detailed results for each target sample’s range test for
-each property.
+each property. The result of the range test in detailled as: `TRUE` for
+samples within the range, `low` for sample values lower than the range,
+and `high` for sample values higher than the range.
 
 ``` r
 rt.results <- fingR::range.tests(data = database,                 # Dataset containing source and mixture information
@@ -648,11 +653,11 @@ BMM.preds.mixE <- fingR::ensure.total(data = BMM.preds.mix,      # Predicted sou
 ``` r
 BMM.preds.mixE[1:5,]
 #>           mix.names Median_Forest Median_Subsoil Median_Undecontaminated total
-#> 1 ManoDd_2106_00-01         0.068          0.569                   0.363 1.000
-#> 2 ManoDd_2106_01-02         0.026          0.973                   0.001 0.999
-#> 3 ManoDd_2106_02-03         0.037          0.700                   0.263 0.999
-#> 4 ManoDd_2106_03-04         0.103          0.765                   0.132 0.999
-#> 5 ManoDd_2106_04-05         0.057          0.923                   0.020 0.998
+#> 1 ManoDd_2106_00-01         0.019          0.550                   0.431     1
+#> 2 ManoDd_2106_01-02         0.001          0.745                   0.254     1
+#> 3 ManoDd_2106_02-03         0.039          0.960                   0.001     1
+#> 4 ManoDd_2106_03-04         0.063          0.520                   0.417     1
+#> 5 ManoDd_2106_04-05         0.051          0.767                   0.182     1
 ```
 
 Same code for virtual mixtures:
@@ -688,11 +693,11 @@ BMM.preds.VME <- fingR::ensure.total(data = BMM.preds.VM,        # Predicted sou
 ``` r
 BMM.preds.VME[1:5,]
 #>   mix.names Median_Forest Median_Subsoil Median_Undecontaminated total
-#> 1    VM-001         0.001          0.857                   0.142     1
-#> 2    VM-002         0.001          0.998                   0.001     1
-#> 3    VM-003         0.019          0.845                   0.136     1
-#> 4    VM-004         0.035          0.964                   0.001     1
-#> 5    VM-005         0.023          0.976                   0.001     1
+#> 1    VM-001         0.001          0.735                   0.264     1
+#> 2    VM-002         0.001          0.835                   0.164     1
+#> 3    VM-003         0.171          0.828                   0.001     1
+#> 4    VM-004         0.001          0.816                   0.183     1
+#> 5    VM-005         0.001          0.998                   0.001     1
 ```
 
 #### Modelling accuracy statistics
@@ -718,9 +723,9 @@ BMM.stats <- fingR::eval.groups(df.obs = VM.contrib,                            
 ``` r
 BMM.stats
 #>     Type           Source    ME RMSE   r2   NSE
-#> 1 Median           Forest -0.17 0.25 0.50  0.00
-#> 2 Median          Subsoil  0.40 0.48 0.37 -2.58
-#> 3 Median Undecontaminated -0.23 0.40 0.01 -1.44
+#> 1 Median           Forest -0.17 0.25 0.55  0.04
+#> 2 Median          Subsoil  0.42 0.48 0.39 -2.64
+#> 3 Median Undecontaminated -0.24 0.39 0.00 -1.37
 ```
 
 The `CRPS` functions calculate the continuous ranking probability score
@@ -744,18 +749,21 @@ BMM.CRPS <- fingR::CRPS(obs = VM.contrib,                                       
 ``` r
 BMM.CRPS$samples[1:6,]
 #>   Sample_name Forest Subsoil Undecontaminated
-#> 1      VM-001 0.0429  0.4157           0.6076
-#> 2      VM-002 0.0504  0.4658           0.7561
-#> 3      VM-003 0.0415  0.3152           0.4716
-#> 4      VM-004 0.0368  0.2465           0.3592
-#> 5      VM-005 0.0623  0.2894           0.5145
-#> 6      VM-006 0.0607  0.2519           0.4316
+#> 1      VM-001 0.0577  0.3611           0.5768
+#> 2      VM-002 0.0310  0.4083           0.5327
+#> 3      VM-003 0.0718  0.2335           0.4345
+#> 4      VM-004 0.0552  0.2203           0.4138
+#> 5      VM-005 0.0335  0.3710           0.5467
+#> 6      VM-006 0.0502  0.2732           0.4568
+```
+
+``` r
 
 BMM.CRPS$mean
 #>             Source CRPS.mean
-#> 1           Forest    0.1423
-#> 2          Subsoil    0.1672
-#> 3 Undecontaminated    0.1915
+#> 1           Forest    0.1399
+#> 2          Subsoil    0.1654
+#> 3 Undecontaminated    0.1836
 ```
 
 The `interval.width` functions calculate two prediction interval width:
@@ -778,20 +786,23 @@ BMM.predWidth <- fingR::interval.width(path.to.prev = paste0(dir.mod.BMM, "BMM_p
 ``` r
 BMM.predWidth$samples[1:6,]
 #>   mix.names           source   W50   W95
-#> 1    VM-001           Forest 0.319 0.779
-#> 2    VM-001          Subsoil 0.466 0.997
-#> 3    VM-001 Undecontaminated 0.415 0.981
-#> 4    VM-002           Forest 0.334 0.997
-#> 5    VM-002          Subsoil 0.565 0.997
-#> 6    VM-002 Undecontaminated 0.197 0.571
+#> 1    VM-001           Forest 0.355 0.846
+#> 2    VM-001          Subsoil 0.425 0.997
+#> 3    VM-001 Undecontaminated 0.496 0.997
+#> 4    VM-002           Forest 0.145 0.572
+#> 5    VM-002          Subsoil 0.460 0.997
+#> 6    VM-002 Undecontaminated 0.277 0.957
+```
+
+``` r
 
 BMM.predWidth$mean
 #> # A tibble: 3 × 3
 #>   Source           W50.mean W95.mean
 #>   <chr>               <dbl>    <dbl>
-#> 1 Forest              0.358    0.862
-#> 2 Subsoil             0.574    0.962
-#> 3 Undecontaminated    0.417    0.917
+#> 1 Forest              0.345    0.88 
+#> 2 Subsoil             0.586    0.962
+#> 3 Undecontaminated    0.415    0.922
 ```
 
 The `ESP` function calculates the Encompassed Sample Prediction (ESP).
@@ -820,9 +831,9 @@ BMM.ESP <- fingR::ESP(obs = BMM.preds.VM,                       # Virtual mixtur
 ``` r
 BMM.ESP
 #>                                   Source ESP.Number ESP.Percentage
-#> Median_Forest                     Forest         33             87
+#> Median_Forest                     Forest         37             97
 #> Median_Subsoil                   Subsoil         38            100
-#> Median_Undecontaminated Undecontaminated         23             61
+#> Median_Undecontaminated Undecontaminated         28             74
 ```
 
 Modelling accuracy statistics could be interpreted the following way:
@@ -1095,11 +1106,11 @@ MixSIAR.preds.mixE <- fingR::ensure.total(data = MixSIAR.preds.mix,             
 ``` r
 MixSIAR.preds.mixE[1:5,]
 #>              sample Median_Forest Median_Subsoil Median_Undecontaminated total
-#> 1 ManoDd_2106_00-01         0.189          0.028                   0.783 1.000
-#> 2 ManoDd_2106_01-02         0.063          0.026                   0.911 0.999
-#> 3 ManoDd_2106_02-03         0.068          0.033                   0.899 0.999
-#> 4 ManoDd_2106_03-04         0.076          0.034                   0.890 1.000
-#> 5 ManoDd_2106_04-05         0.070          0.026                   0.904 1.000
+#> 1 ManoDd_2106_00-01         0.173          0.032                   0.795 1.000
+#> 2 ManoDd_2106_01-02         0.066          0.027                   0.907 0.999
+#> 3 ManoDd_2106_02-03         0.072          0.030                   0.898 0.999
+#> 4 ManoDd_2106_03-04         0.067          0.031                   0.902 0.999
+#> 5 ManoDd_2106_04-05         0.071          0.030                   0.899 1.000
 ```
 
 Same code for virtual mixtures:
@@ -1132,11 +1143,11 @@ MixSIAR.preds.VME <- fingR::ensure.total(data = MixSIAR.preds.VM,               
 ``` r
 MixSIAR.preds.VME[1:5,]
 #>   sample Median_Forest Median_Subsoil Median_Undecontaminated total
-#> 1 VM-001         0.176          0.405                   0.418 0.999
-#> 2 VM-002         0.127          0.387                   0.486 1.000
-#> 3 VM-003         0.124          0.418                   0.458 1.000
-#> 4 VM-004         0.121          0.444                   0.435 1.000
-#> 5 VM-005         0.114          0.493                   0.392 0.999
+#> 1 VM-001         0.177          0.415                   0.409 1.001
+#> 2 VM-002         0.139          0.386                   0.475 1.000
+#> 3 VM-003         0.117          0.405                   0.478 1.000
+#> 4 VM-004         0.124          0.453                   0.423 1.000
+#> 5 VM-005         0.121          0.493                   0.387 1.001
 ```
 
 #### Modelling accuracy statistics
@@ -1162,9 +1173,9 @@ MixSIAR.stats <- fingR::eval.groups(df.obs = VM.contrib,                        
 ``` r
 MixSIAR.stats
 #>     Type           Source    ME RMSE   r2  NSE
-#> 1 Median           Forest -0.14 0.19 0.81 0.41
-#> 2 Median          Subsoil  0.07 0.13 0.80 0.72
-#> 3 Median Undecontaminated  0.07 0.25 0.15 0.05
+#> 1 Median           Forest -0.13 0.19 0.81 0.45
+#> 2 Median          Subsoil  0.07 0.13 0.81 0.72
+#> 3 Median Undecontaminated  0.05 0.24 0.17 0.09
 ```
 
 The `CRPS` functions calculate the continuous ranking probability score
@@ -1187,18 +1198,21 @@ MixSIAR.CRPS <- fingR::CRPS(obs = VM.contrib,                                   
 ``` r
 MixSIAR.CRPS$samples[1:6,]
 #>   Sample_name Forest Subsoil Undecontaminated
-#> 1      VM-001 0.1616  0.3908           0.5635
-#> 2      VM-002 0.0909  0.2688           0.3671
-#> 3      VM-003 0.0886  0.2492           0.3456
-#> 4      VM-004 0.0861  0.2422           0.3368
-#> 5      VM-005 0.0831  0.2328           0.3243
-#> 6      VM-006 0.0824  0.2327           0.3236
+#> 1      VM-001 0.1664  0.3980           0.5691
+#> 2      VM-002 0.0991  0.2716           0.3795
+#> 3      VM-003 0.0844  0.2429           0.3361
+#> 4      VM-004 0.0899  0.2400           0.3375
+#> 5      VM-005 0.0882  0.2339           0.3295
+#> 6      VM-006 0.0785  0.2248           0.3116
+```
+
+``` r
 
 MixSIAR.CRPS$mean
 #>             Source CRPS.mean
-#> 1           Forest    0.1183
-#> 2          Subsoil    0.0769
-#> 3 Undecontaminated    0.1434
+#> 1           Forest    0.1142
+#> 2          Subsoil    0.0775
+#> 3 Undecontaminated    0.1400
 ```
 
 The `interval.width` functions calculate two prediction interval width:
@@ -1221,20 +1235,23 @@ MixSIAR.predWidth <- fingR::interval.width(path.to.prev = paste0(dir.mod.MixSIAR
 ``` r
 BMM.predWidth$samples[1:6,]
 #>   mix.names           source   W50   W95
-#> 1    VM-001           Forest 0.319 0.779
-#> 2    VM-001          Subsoil 0.466 0.997
-#> 3    VM-001 Undecontaminated 0.415 0.981
-#> 4    VM-002           Forest 0.334 0.997
-#> 5    VM-002          Subsoil 0.565 0.997
-#> 6    VM-002 Undecontaminated 0.197 0.571
+#> 1    VM-001           Forest 0.355 0.846
+#> 2    VM-001          Subsoil 0.425 0.997
+#> 3    VM-001 Undecontaminated 0.496 0.997
+#> 4    VM-002           Forest 0.145 0.572
+#> 5    VM-002          Subsoil 0.460 0.997
+#> 6    VM-002 Undecontaminated 0.277 0.957
+```
+
+``` r
 
 BMM.predWidth$mean
 #> # A tibble: 3 × 3
 #>   Source           W50.mean W95.mean
 #>   <chr>               <dbl>    <dbl>
-#> 1 Forest              0.358    0.862
-#> 2 Subsoil             0.574    0.962
-#> 3 Undecontaminated    0.417    0.917
+#> 1 Forest              0.345    0.88 
+#> 2 Subsoil             0.586    0.962
+#> 3 Undecontaminated    0.415    0.922
 ```
 
 The `ESP` function calculates the Encompassed Sample Prediction (ESP).

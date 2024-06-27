@@ -192,7 +192,7 @@ By default, the function applies all these criteria, though their effectiveness 
 
 The `range.test` function returns a list containing two data frames
   - *results.df*: A summary overview of the range test results.
-  - *results.RT*: Detailed results for each target sample's range test for each property.
+  - *results.RT*: Detailed results for each target sample's range test for each property. The result of the range test in detailled as: `TRUE` for samples within the range, `low` for sample values lower than the range, and `high` for sample values higher than the range.
 
 ```{r}
 rt.results <- fingR::range.tests(data = database,                 # Dataset containing source and mixture information
