@@ -24,7 +24,7 @@ Fingerprinting studies. It provides essentials tools including: dataset
 characterisation, tracer selection from analysed properties through the
 Three-step method, model source contributions modelling with the
 Bayesian Mixing Model (BMM), and assessment of modelling predictions
-prediction though the use of virtual mixtures, supporting BMM and
+prediction through  the use of virtual mixtures, supporting BMM and
 [MixSIAR](http://brianstock.github.io/MixSIAR/index.html) models.
 
 The `fingR` package is available in this
