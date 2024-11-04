@@ -4,3 +4,6 @@
 .Ruserdata
 
 **/temp_data
+
+R/graph_**
+R/SSF_ternary.R

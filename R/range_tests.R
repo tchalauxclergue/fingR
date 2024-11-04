@@ -31,32 +31,34 @@ range.tests <- function(data, class, mixture = "target", properties, alternative
   criteria <- c(criteria) #if the user only set one test
 
   if(alternative == "single"){
-    s.id <- data[, c(class, sample.id)] %>% dplyr::filter(.data[[class]] == mixture) %>% dplyr::select(all_of(sample.id))
     results.RTs <- list()
   }
 
   results.df <- data.frame(matrix(ncol = 0, nrow = length(properties))) #empty data frame (number of rows = number of properties)
 
   for(prop in properties){ #for each property
-    clean.prop <- data[complete.cases(data[[prop]]), c(class, prop)] #delete rows without data - avoid data with NA values
+    clean.prop <- data[complete.cases(data[[prop]]), c(class, prop)] # delete rows without data - avoid data with NA values
     n.nas <- as.numeric(length(data[[prop]]) - length(clean.prop[[prop]])) # save the number of NA samples
 
-    data.S <- dplyr::filter(clean.prop, .data[[class]] != mixture) #sources data
-    data.T <- dplyr::filter(clean.prop, .data[[class]] == mixture) #mixtures data
+    data.S <- dplyr::filter(clean.prop, .data[[class]] != mixture) # sources data
+    data.T <- dplyr::filter(clean.prop, .data[[class]] == mixture) # mixtures data
 
     resu <- fingR::RT.player(data.s = data.S, data.t = data.T[[prop]], criteria = criteria, MM.error = MM.error, hinge.range = hinge.range, CI.CLs = CI.lvl, alternative = alternative, class = class, shift = shift)
 
     if(alternative == "single"){
-      sapply(resu, "[[", 2)
+      
       results.df <- rbind(results.df, c(prop, #property name
-                                        nrow(data.S), #number of source samples
-                                        nrow(data.T), #number of mixture/target samples
+                                        nrow(data.S), #number of Source
+                                        nrow(data.T), #number of mixture/Target
                                         n.nas, #number of NA
                                         unname(sapply(resu, "[[", 2)))) # range tests results
 
       # each sample range test results
+      s.id <- data[complete.cases(data[[prop]]), c(sample.id, class)] %>% dplyr::filter(.data[[class]] == mixture) %>% dplyr::select(all_of(sample.id)) # extract samples names
+      
       results.RT <- data.frame(s.id, prop, nrow(data.S), unname(sapply(resu, "[[", 1))) #create data frame with each sample range test result
       colnames(results.RT) <- c(sample.id, "Property", "n_source", paste0("RT_", names(resu))) #correct col names
+      
       if(save.each == TRUE){
         if(!missing(save.dir)){
           file.name <- paste("RT_samples", prop, alternative, sep = "_")

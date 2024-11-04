@@ -14,7 +14,7 @@ knitr::opts_chunk$set(
 
 
 ```{r include = FALSE, eval = FALSE}
-# to update vignette : Crt + Shift + D
+# to update vignette : Crtl + Shift + D
 
 devtools::build_rmd(files = "C:/Users/tchalaux/ownCloud/Code_R/fingR/fingR/README.Rmd") 
 ```
@@ -74,10 +74,10 @@ The `fingR` package is available in this [Github](https://github.com/tchalauxcle
 library(devtools)
 
 # Install the lastest version from GitHub
-devtools::install_github("https://github.com/tchalauxclergue/fingR/releases/tag/2.1.0", ref = "master", force = T)
+devtools::install_github("https://github.com/tchalauxclergue/fingR/releases/tag/2.1.1", ref = "master", force = T)
 
 # Alternatively, from the downloaded .tar.gz file
-devtools::install_local("path_to_file/fingR_2.1.0.tar.gz", repos = NULL) # 'path_to_file' should be modified accordingly to your working environment
+devtools::install_local("path_to_file/fingR_2.1.1.tar.gz", repos = NULL) # 'path_to_file' should be modified accordingly to your working environment
 ```
 
 
