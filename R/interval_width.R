@@ -1,13 +1,13 @@
 #' Interval width
 #'
-#' @param prev description
-#' @param path.to.prev description
+#' @param prev a data.frame with previsions for each sample and for each source group.
+#' @param path.to.prev a connection to the previsions for each sample and for each source group.
 #' @param sample_name description
 #' @param source.groups description
 #' @param value description
 #' @param mean.cal description
 #' @param save description
-#' @param save.path description
+#' @param save.dir description
 #' @param note a character string to add a note at the end of the file name (not set - default).
 #' @param fileEncoding character string, if non-empty declares the encoding to be used on a file (not a connection) so the character data can be re-encoded
 #' as they are written, "latin1" (default).
@@ -65,7 +65,7 @@ interval.width <- function(prev, path.to.prev, sample_name, source.groups, value
   }
 
 
-  if(isTRUE(save)){
+  if(isTRUE(save) | !missing(save.dir)){
     file.name <- "Interval_width"
     if(!missing(note)){
       file.name <- paste(file.name, note, sep="_")

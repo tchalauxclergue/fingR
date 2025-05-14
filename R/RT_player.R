@@ -21,11 +21,11 @@ RT.player <- function(data.t, data.s, criteria, MM.error, hinge.range, CI.CLs, a
 
   # minimum-maximum
   if("all" %in% criteria || "MM" %in% criteria){
-    resu[["MM"]] <- fingR::RT.MM(target = data.t, sources = data.s, class = class, alternative = alternative) #OK
+    resu[["MM"]] <- fingR::RT.MM(target = data.t, sources = data.s, class = class, alternative = alternative)
   }
   # minimum-maximum and measurement error
   if("all" %in% criteria || "MMe" %in% criteria){
-    resu[["MMe"]] <- fingR::RT.MM(target = data.t, sources = data.s, class = class, MM.error = MM.error, alternative = alternative) #OK
+    resu[["MMe"]] <- fingR::RT.MM(target = data.t, sources = data.s, class = class, MM.error = MM.error, alternative = alternative)
   }
   # hinge
   if("all" %in% criteria || "hinge" %in% criteria){

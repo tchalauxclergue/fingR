@@ -8,6 +8,7 @@
 #' @param class A character string specifying the column name for the class.
 #' @param tracers A character vector specifying the tracer columns to be used.
 #' @param uncertainty A character vector specifying the uncertainty columns, if available.
+#' @param uncertainty.suffix,uncertainty.prefix A character string or vector specifying the uncertainty suffix and/or prefix used to indicate uncertainty analyses (e.g. prop_SD -> "_SD" or SD.prop -> "SD.").
 #' @param contributions A data frame specifying the contribution of each source. If missing, contributions are generated.
 #' @param VM.range A numeric vector of length 2 specifying the range of contributions. 
 #' @param VM.step A numeric value specifying the step size for the contributions.
@@ -36,7 +37,7 @@
 #' @author Thomas Chalaux-Clergue
 #' 
 #' @export
-VM.builder <- function(data, material, source.name = "Source", class, tracers, uncertainty, contributions, VM.range, VM.step, VM.name, add.sources = FALSE, Normal.distrib.samples = FALSE, multivar = FALSE, n.norm = 2500, step = .1, save.dir, note, fileEncoding = "latin1", RETURN = TRUE){
+VM.builder <- function(data, material, source.name = "Source", class, tracers, uncertainty, uncertainty.suffix, uncertainty.prefix, contributions, VM.range, VM.step, VM.name, add.sources = FALSE, Normal.distrib.samples = FALSE, multivar = FALSE, n.norm = 2500, step = .1, save.dir, note, fileEncoding = "latin1", RETURN = TRUE){
 
   require(reshape2)
   require(tibble)
@@ -88,7 +89,7 @@ VM.builder <- function(data, material, source.name = "Source", class, tracers, u
     math.mix.sd <- math.mix.sd[order(math.mix.sd[[1]], decreasing = FALSE),]
 
   }else{ # Generate VM property values that are simple multiplication
-    resu <- fingR::VM.proportionate.prop.values(data = df.sources, class = class, tracers = tracers, contributions = contributions, VM.name = VM.name)
+    resu <- fingR::VM.proportionate.prop.values(data = df.sources, class = class, tracers = tracers, contributions = contributions, VM.name = VM.name, uncertainty.suffix = uncertainty.suffix, uncertainty.prefix = uncertainty.prefix)
     math.mix <- resu[[1]]
     math.mix.sd <- resu[[2]]
   }

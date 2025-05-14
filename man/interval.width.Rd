@@ -18,9 +18,9 @@ interval.width(
 )
 }
 \arguments{
-\item{prev}{description}
+\item{prev}{a data.frame with previsions for each sample and for each source group.}
 
-\item{path.to.prev}{description}
+\item{path.to.prev}{a connection to the previsions for each sample and for each source group.}
 
 \item{sample_name}{description}
 
@@ -32,12 +32,12 @@ interval.width(
 
 \item{save}{description}
 
+\item{save.dir}{description}
+
 \item{note}{a character string to add a note at the end of the file name (not set - default).}
 
 \item{fileEncoding}{character string, if non-empty declares the encoding to be used on a file (not a connection) so the character data can be re-encoded
 as they are written, "latin1" (default).}
-
-\item{save.path}{description}
 }
 \description{
 Interval width

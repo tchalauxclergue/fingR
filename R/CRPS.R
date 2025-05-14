@@ -4,6 +4,7 @@
 #'
 #' @param obs a data.frame with the observed source group contributions.
 #' @param prev a data.frame with previsions for each sample and for each source group.
+#' @param path.to.prev a connection to the previsions for each sample and for each source group.
 #' @param sample.name.obs,sample.name.prev a character string of the column name with sample name in obs/prev.
 #' @param prev.source.name a character string of the column name with source groups in prev.
 #' @param prev.values a character string of the column name with prevision values in prev.
@@ -17,11 +18,16 @@
 #' @author Thomas Chalaux-Clergue
 #'
 #' @export
-CRPS <- function(obs, prev, sample.name.obs, sample.name.prev, prev.source.name, prev.values, source.groups, mean.cal = FALSE, save.dir, note, fileEncoding = "latin1"){
+CRPS <- function(obs, prev, path.to.prev, sample.name.obs, sample.name.prev, prev.source.name, prev.values, source.groups, mean.cal = FALSE, save.dir, note, fileEncoding = "latin1"){
 
   require(dplyr)
   require(scoringRules)
 
+  if(missing(prev)){
+    prev <- read.csv(path.to.prev)
+    if(ncol(prev)==1){ prev <- read.csv(path.to.prev, sep=";") } #if the csv was opened with excel
+  }
+  
   if(missing(sample.name.obs)){ sample.name.obs <- colnames(obs)[1] } # if no sample name was given it is assumed that it is the first column
   if(missing(sample.name.prev)){ sample.name.prev <- colnames(prev)[1] } # if no sample name was given it is assumed that it is the first column
   if(missing(prev.source.name)){ prev.source.name <- colnames(prev)[2] }
@@ -62,14 +68,19 @@ CRPS <- function(obs, prev, sample.name.obs, sample.name.prev, prev.source.name,
   }
 
   # saving
-  if(!missing(save.dir)){
+  if(isTRUE(save) | !missing(save.dir)){
     file.name <- "CRPS"
     if(!missing(note)){
       file.name <- paste(file.name, note, sep = "_")
     }
-    utils::write.csv(CRPS.df, paste0(save.dir, file.name, ".csv"), row.names = F, fileEncoding = fileEncoding)
-    if(isTRUE(mean.cal)){
-      utils::write.csv(CRPS.mean, paste0(save.dir, file.name, "_mean.csv"), row.names = F, fileEncoding = fileEncoding)
+    if(missing(save.dir)){
+      path2 <- unlist(strsplit(path.to.prev, split="[/]"))
+      save.dir <- paste(paste(path2[1:(length(path2)-1)], collapse = "/"), "/", sep="")
+    }
+    utils::write.csv(CRPS.df, paste0(save.dir, file.name, ".csv"), fileEncoding = fileEncoding, row.names = FALSE)
+      if(isTRUE(mean.cal)){
+        utils::write.csv(CRPS.mean, paste0(save.dir, file.name, "_mean.csv"), row.names = F, fileEncoding = fileEncoding)
+
     }
   }
   return(resu)

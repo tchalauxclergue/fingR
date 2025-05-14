@@ -13,10 +13,10 @@ which.disc.tests <- function(tests){
   performed.tests <- c()
 
   if("KW" %in% tests || "all" %in% tests){
-    performed.tests <- c(performed.tests, "Kruskal.Wallis_p.value", "Kruskal.Wallis_signif")
+    performed.tests <- c(performed.tests, "KW_p.value", "KW_signif")
   }
   if("KS" %in% tests || "all" %in% tests){
-    performed.tests <- c(performed.tests, "Kolmogorov.Smirnov_p.value", "Kolmogorov.Smirnov_signif")
+    performed.tests <- c(performed.tests, "KS_p.value", "KS_signif")
   }
 
   return(performed.tests)

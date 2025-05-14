@@ -7,6 +7,7 @@
 CRPS(
   obs,
   prev,
+  path.to.prev,
   sample.name.obs,
   sample.name.prev,
   prev.source.name,
@@ -22,6 +23,8 @@ CRPS(
 \item{obs}{a data.frame with the observed source group contributions.}
 
 \item{prev}{a data.frame with previsions for each sample and for each source group.}
+
+\item{path.to.prev}{a connection to the previsions for each sample and for each source group.}
 
 \item{sample.name.obs, sample.name.prev}{a character string of the column name with sample name in obs/prev.}
 

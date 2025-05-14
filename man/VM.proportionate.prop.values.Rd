@@ -4,18 +4,28 @@
 \alias{VM.proportionate.prop.values}
 \title{Virtual mixtures proportionate property values}
 \usage{
-VM.proportionate.prop.values(data, class, tracers, contributions, VM.name)
+VM.proportionate.prop.values(
+  data,
+  class,
+  tracers,
+  contributions,
+  VM.name,
+  uncertainty.suffix,
+  uncertainty.prefix
+)
 }
 \arguments{
-\item{data}{description}
+\item{data}{A data frame containing the dataset.}
 
-\item{class}{description}
+\item{class}{A character string specifying the column name for the class.}
 
-\item{tracers}{description}
+\item{tracers}{A character vector specifying the tracer columns to be used. Uncertainty values names should be consistent with value names. The uncertainty should be set as a prefix (i.e. uncertainty + property) or as a suffix (i.e. property + uncertainty).}
 
-\item{contributions}{description}
+\item{contributions}{A data frame specifying the contribution of each source. If missing, contributions are generated.}
 
-\item{VM.name}{description}
+\item{VM.name}{A character string specifying the name for the virtual mixture column.}
+
+\item{uncertainty.suffix, uncertainty.prefix}{A character string or vector specifying the uncertainty suffix OR prefix used to indicate uncertainty analyses (e.g. prop_SD -> "_SD" OR SD_prop -> "SD_").}
 }
 \value{
 A list of two data.frame: artificial mixtures *property* values and artificial mixtures properties measurement *uncertainty*.

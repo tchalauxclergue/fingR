@@ -19,14 +19,14 @@
 is.discriminant <- function(data, property, test.format, test.pos, sep.format, p.level = 0.05, note){
 
   # test if the data.frame comes from fingR::discriminant.test
-  if( setequal(colnames(data), c("Property", "n.similar.groups", "respect.KW.shape.assumption", "Kruskal.Wallis_p.value", "Kruskal.Wallis_signif")) ){
+  if( setequal(colnames(data), c("Property", "n.similar.groups", "respect.KW.shape.assumption", "KW_p.value", "KW_signif")) ){
     property = "Property"
-    test.format = "Kruskal.Wallis_p.value"
+    test.format = "KW_p.value"
     test.pos = 1
     sep.format = "_"
-  }else if( setequal(colnames(data), c("Property", "n.diff.groups", "Kolmogorov.Smirnov_discriminant")) ){
+  }else if( setequal(colnames(data), c("Property", "n.diff.groups", "KS_discriminant")) ){
     property = "Property"
-    test.format = "Kolmogorov.Smirnov_discriminant"
+    test.format = "KS_discriminant"
     test.pos = 1
     sep.format = "_"
   }

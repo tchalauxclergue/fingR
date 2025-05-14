@@ -11,6 +11,8 @@ VM.builder(
   class,
   tracers,
   uncertainty,
+  uncertainty.suffix,
+  uncertainty.prefix,
   contributions,
   VM.range,
   VM.step,
@@ -38,6 +40,8 @@ VM.builder(
 \item{tracers}{A character vector specifying the tracer columns to be used.}
 
 \item{uncertainty}{A character vector specifying the uncertainty columns, if available.}
+
+\item{uncertainty.suffix, uncertainty.prefix}{A character string or vector specifying the uncertainty suffix and/or prefix used to indicate uncertainty analyses (e.g. prop_SD -> "_SD" or SD.prop -> "SD.").}
 
 \item{contributions}{A data frame specifying the contribution of each source. If missing, contributions are generated.}
 

@@ -56,7 +56,7 @@ JAGS.pred <- function(path, stats, save = FALSE, note, fileEncoding = "latin1"){
 
 
   if(isTRUE(save)){
-    file.name <- paste("ordered_contrib", paste(stats, collapse="-"), sep ="_")
+    file.name <- paste("JAGS_ordered_contrib", paste(stats, collapse="-"), sep ="_")
     if(!missing(note)){
       file.name <- paste(file.name, note, sep="_")
     }

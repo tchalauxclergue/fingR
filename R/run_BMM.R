@@ -46,10 +46,14 @@ run.BMM <- function(data, class, mixture = "target", sample.id, tracers, uncerta
   require(Rsolnp)
   require(progress)
   
+  
   # Source dataset
   dt.source <- data %>%
     dplyr::filter(.data[[class]] != mixture) %>% # selection source sample
     dplyr::select(dplyr::all_of(c(sample.id, class, tracers)))
+  
+  # Verify that the sources samples do not have zero values
+  fingR::BMM.gate.keeper(data = dt.source, sample.id = sample.id, tracers = tracers)
   
   # Target dataset
   dt.target <- data %>%

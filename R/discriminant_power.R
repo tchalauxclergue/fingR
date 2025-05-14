@@ -30,7 +30,7 @@ discriminant.power <- function(data, test.context, min.discriminant = 1, p.level
       test.sum <- sum(data[which(data$Property == property), test.pval] < p.level) # count groups that are statistically different
       position <- test.sum >= min.discriminant
 
-      end.colnames <- c("n.diff.groups", "Kolmogorov.Smirnov_discriminant")
+      end.colnames <- c("n.diff.groups", "KS_discriminant")
     }
 
     if(test.context == "KW.KS"){

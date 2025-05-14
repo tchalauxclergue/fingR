@@ -1,10 +1,10 @@
 Type: Package
 Package: fingR
 Title: A package to support sediment source fingerprinting studies 
-Version: 2.1.1
+Version: 2.1.2
 Authors:
   person("Thomas", "Chalaux-Clergue", role = c("cre","aut","cph"), email = "thomaschalaux@icloud.com", comment = c(ORCID = "0000-0003-3525-832X")),
-  person("Rémi", "Bizeul", role = c("ctb"), email = "rbizeul59@gmail.com", comment = c(ORCID = "0000-0002-4103-9839"))
+  person("Rémi", "Bizeul", role = c("ctb"), email = "rbizeul59@gmail.com", comment = c("Provided feedback", ORCID = "0000-0002-4103-9839"))
 Maintainer:
   The package maintainer <thomaschalaux@icloud.com>
 Description:
@@ -46,8 +46,8 @@ Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.3.1
 Config/testthat/edition: 3
-Packaged: 2024-11-03
-Date: 2024
+Packaged: 2025-05-14
+Date: 2025
 Author:
   Thomas Chalaux-Clergue [cre, aut, cph] ("0000-0003-3525-832X"),
   Rémi Bizeul [ctb] ("0000-0002-4103-9839")

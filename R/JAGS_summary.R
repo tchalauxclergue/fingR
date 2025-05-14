@@ -34,7 +34,7 @@ JAGS.summary <- function(jags.1, mix, sources, path, note, fileEncoding = "latin
   }
 
   # Calculation of statistics
-  df <- all.preds %>%
+  pred.stats <- all.preds %>%
     dplyr::group_by(source, sample) %>%
     dplyr::summarise("Mean" = round(mean(pred), 3),
                      "SD" = round(stats::sd(pred), 3),
@@ -48,8 +48,8 @@ JAGS.summary <- function(jags.1, mix, sources, path, note, fileEncoding = "latin
     as.data.frame()
 
 
-  if(save_pred == TRUE){
-    file.name <- "MixSIAR_prevision"
+  if(isTRUE(save_pred)){
+    file.name <- "JAGS_prevision"
     if(!missing(note)){
       file.name <- paste(file.name, note, sep="_")
     }
@@ -57,11 +57,11 @@ JAGS.summary <- function(jags.1, mix, sources, path, note, fileEncoding = "latin
   }
 
   if(!missing(path)){
-    file.name <- "contrib"
+    file.name <- "JAGS_contrib"
     if(!missing(note)){
       file.name <- paste(file.name, note, sep="_")
     }
-    utils::write.csv(df, paste(path, paste(file.name, ".csv", sep = ""), sep="/"), row.names = F)
+    utils::write.csv(pred.stats, paste(path, paste(file.name, ".csv", sep = ""), sep="/"), row.names = F)
   }
-  return(df)
+  return(pred.stats)
 }
