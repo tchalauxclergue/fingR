@@ -12,8 +12,7 @@ ESP(
   sources.pred,
   count = FALSE,
   digits = 0,
-  split = "_",
-  source.pos
+  split = "_"
 )
 }
 \arguments{
@@ -24,6 +23,8 @@ ESP(
 \item{count}{Boolean or Character. Return percentage when FALSE (default) and count when TRUE. Or "Both" if user want both.}
 
 \item{digits}{Integer indicating the number of decimal places (round) or significant digits (signif) to be used. For round, negative values are allowed (see base::Round for more details).}
+
+\item{split}{Character string used to split the row names of the result to extract the actual source names (e.g., if row names are "ESP.Percentage_SourceA", and split = "_", "SourceA" will be extracted). Default is "_".}
 }
 \description{
 Calculate the number of elements from prediction (pred) that lies within the observed (obs) range for each source

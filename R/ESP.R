@@ -6,11 +6,12 @@
 #' @param sources,source.obs,sources.pred Character or vector of character indicating the column(s) that contains source labels. If source labels differ in obs and pred, indicate them.
 #' @param count Boolean or Character. Return percentage when FALSE (default) and count when TRUE. Or "Both" if user want both.
 #' @param digits Integer indicating the number of decimal places (round) or significant digits (signif) to be used. For round, negative values are allowed (see base::Round for more details).
+#' @param split Character string used to split the row names of the result to extract the actual source names (e.g., if row names are "ESP.Percentage_SourceA", and split = "_", "SourceA" will be extracted). Default is "_".
 #'
 #' @author Thomas Chalaux-Clergue
 #' 
 #' @export
-ESP <- function(obs, pred, sources, sources.obs, sources.pred, count = FALSE, digits = 0, split = "_", source.pos){
+ESP <- function(obs, pred, sources, sources.obs, sources.pred, count = FALSE, digits = 0, split = "_"){
 
   if(!missing(sources)){
     sources.obs <- sources
