@@ -5,16 +5,16 @@
 #' @param jags.1 rjags model object, output from MixSIAR::run_model function
 #' @param mix output from MixSIAR::load_mix_data
 #' @param sources output from MixSIAR::load_source_data
-#' @param path connection open to write the results data.frame.
+#' @param save.dir connection open to write the results data.frame.
 #' @param note a character string to add a note at the end of the file name (not set - default).
 #' @param fileEncoding character string, if non-empty declares the encoding to be used on a file (not a connection) so the character data can be re-encoded
 #' as they are written, "latin1" (default).
-#' @param save_pred a boolean to save all the MixSIAR Monte-Carlo chain predictions
+#' @param save.pred a boolean to save all the MixSIAR Monte-Carlo chain predictions 
 #'
 #' @author Thomas Chalaux-Clergue
 #'
 #' @export
-JAGS.summary <- function(jags.1, mix, sources, path, note, fileEncoding = "latin1", save_pred = FALSE){
+JAGS.summary <- function(jags.1, mix, sources, save.dir, note, fileEncoding = "latin1", save.pred = TRUE){
 
   require(dplyr)
 
@@ -48,20 +48,20 @@ JAGS.summary <- function(jags.1, mix, sources, path, note, fileEncoding = "latin
     as.data.frame()
 
 
-  if(isTRUE(save_pred)){
+  if(isTRUE(save.pred)){
     file.name <- "JAGS_prevision"
     if(!missing(note)){
       file.name <- paste(file.name, note, sep="_")
     }
-    utils::write.csv(all.preds, paste(path, paste(file.name, ".csv", sep = ""), sep="/"), row.names = F)
+    utils::write.csv(all.preds, paste(save.dir, paste(file.name, ".csv", sep = ""), sep="/"), row.names = F)
+    base::print(" MixSIAR Monte-Carlo chain predictions saved.")
   }
 
-  if(!missing(path)){
+  if(!missing(save.dir)){
     file.name <- "JAGS_contrib"
     if(!missing(note)){
       file.name <- paste(file.name, note, sep="_")
     }
-    utils::write.csv(pred.stats, paste(path, paste(file.name, ".csv", sep = ""), sep="/"), row.names = F)
+    utils::write.csv(pred.stats, paste(save.dir, paste(file.name, ".csv", sep = ""), sep="/"), row.names = F)
   }
-  return(pred.stats)
 }

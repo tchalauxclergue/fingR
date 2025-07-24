@@ -1,2 +1,14 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
+
+.Rhistory
+.RData
+.Ruserdata
+
+^\.temp_data
+
+README-old.Rmd
+
+R/graph_crps.R
+R/graph_op.R
+R/SSF_ternary.R

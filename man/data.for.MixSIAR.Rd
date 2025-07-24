@@ -9,7 +9,7 @@ data.for.MixSIAR(
   class,
   target,
   tracers,
-  sample.name,
+  sample.id,
   save.dir,
   note,
   fileEncoding = "latin1",
@@ -25,7 +25,7 @@ data.for.MixSIAR(
 
 \item{tracers}{A vector listing the tracers names.}
 
-\item{sample.name}{A character string correspond to samples id/name column.}
+\item{sample.id}{A character string correspond to samples id/name column.}
 
 \item{save.dir}{Connection open for writing the test results data.frame. If "" save the file at working directory.}
 

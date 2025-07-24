@@ -28,30 +28,31 @@ graph.op <- function(obs, pred, data, path, save.path, note, acceptance, labels 
 
   require(ggplot2)
 
-  if(missing(pt.colour)){ pt.colour <- "black" }
-  if(missing(ln.colour)){ ln.colour <- "blue" }
+  if (missing(pt.colour)) { pt.colour <- "black" }
+  if (missing(ln.colour)) { ln.colour <- "blue" }
 
-  if(!missing(obs) & !missing(pred)){
+  if (!missing(obs) & !missing(pred)) {
 
-  }else if(!missing(data)){
+  } else if (!missing(data)) {
 
+    # to do
 
-  }else if(!missing(path)){
+  } else if (!missing(path)) {
     # Look for Observation vs. Prediction file and statistisques
     files <- list.files(path, pattern = "*.csv") # all file ending with .csv
-    OP <- read.csv(paste(path, files[grepl(files, pattern = "ObsPred")], sep="/")) # obs vs pred
-    if(ncol(OP)==1){
-      OP <- read.csv(paste(path, files[grepl(files, pattern = "ObsPred")], sep="/"), sep=";") # obs vs pred
+    OP <- read.csv(paste(path, files[grepl(files, pattern = "ObsPred")], sep = "/")) # obs vs pred
+    if (ncol(OP) == 1) {
+      OP <- read.csv(paste(path, files[grepl(files, pattern = "ObsPred")], sep = "/"), sep = ";") # obs vs pred
     }
-    stats.df  <- read.csv(paste(path, files[grepl(files, pattern = "stats")], sep="/")) # stats
-    if(ncol(stats.df) == 1){
-      stats.df  <- read.csv(paste(path, files[grepl(files, pattern = "stats")], sep="/"), sep=";") # stats
+    stats.df  <- read.csv(paste(path, files[grepl(files, pattern = "stats")], sep = "/")) # stats
+    if (ncol(stats.df) == 1) {
+      stats.df  <- read.csv(paste(path, files[grepl(files, pattern = "stats")], sep = "/"), sep = ";") # stats
     }
 
 
     # for each type of data
-    for(type in levels(as.factor(stats.df$Type))){
-      for(grp in levels(as.factor(stats.df$Group))){
+    for (type in levels(as.factor(stats.df$Type))) {
+      for (grp in levels(as.factor(stats.df$Group))) {
         plt <- ggplot() + aes(x = OP[[colnames(OP)[grepl(grp, colnames(OP)) & grepl("Obs", colnames(OP))]]],
                               y = OP[[colnames(OP)[grepl(grp, colnames(OP)) & grepl(type,  colnames(OP))]]]) +
           geom_point(shape = pt.pch, colour = pt.colour) +
@@ -66,18 +67,18 @@ graph.op <- function(obs, pred, data, path, save.path, note, acceptance, labels 
             #theme_classic() +
           theme_bw() + theme(legend.position = "none", axis.title = element_text(size = 13), axis.text.y = element_text(size = 12), axis.text.x = element_text(size = 12), panel.grid = element_line(linewidth = 0.5), axis.ticks = element_line(linewidth = 0.3))
 
-        if(!missing(acceptance)){
+        if (!missing(acceptance)) {
           plt <- plt +
             geom_abline(slope = 1, intercept = acceptance, linetype = "dotted") +
             geom_abline(slope = 1, intercept = -acceptance, linetype = "dotted")
         }
-        if(isTRUE(labels)){
+        if (isTRUE(labels)) {
           plt <- plt + geom_label(label = OP$mix.names, size = 1.8)
         }
-        if(isTRUE(text)){
+        if (isTRUE(text)) {
           plt <- plt + geom_text(label = OP$mix.names, size = 1.8, nudge_y = 0.02, check_overlap = TRUE)
         }
-        if(isTRUE(stats)){
+        if (isTRUE(stats)) {
           plt <- plt + annotate(geom = "text", x = 0.0, y = 0.95, hjust = 0,
                                 label = paste( paste("ME =",   stats.df$ME[which(stats.df$Type == type & stats.df$Group == grp)]),
                                                paste("RMSE =", stats.df$RMSE[which(stats.df$Type == type & stats.df$Group == grp)]), sep = "\n")) +
@@ -85,18 +86,18 @@ graph.op <- function(obs, pred, data, path, save.path, note, acceptance, labels 
             annotate(geom = "text", x = 0.0, y = 0.815, hjust = 0, label = paste("NSE =", stats.df$NSE[which(stats.df$Type == type & stats.df$Group == grp)]))
         }
         file.name <- paste("OP", type, grp, sep = "_")
-        if(!missing(note)){
+        if (!missing(note)) {
           file.name <- paste(file.name, note, sep = "_")
         }
 
-        if(missing(save.path)){
+        if (missing(save.path)) {
           save.path <- path
         }
 
-        if("pdf" %in% format){
+        if ("pdf" %in% format) {
           ggsave(filename = paste0(file.name, ".pdf"), plot = plt, path = save.path, units = units, width = width, height = height)
         }
-        if("png" %in% format){
+        if ("png" %in% format) {
           ggsave(filename = paste0(file.name, ".png"), plot = plt, path = save.path, units = units, width = width, height = height, dpi = dpi)
         }
 

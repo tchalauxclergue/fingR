@@ -7,7 +7,7 @@
 to.log(data, shift = 0.1)
 }
 \arguments{
-\item{data}{a (non-empty) numeric vector of data .}
+\item{data}{a (non-empty) numeric vector of data}
 
 \item{shift}{a numeric value of the size of shift, .1 (default)}
 }

@@ -8,10 +8,10 @@ JAGS.summary(
   jags.1,
   mix,
   sources,
-  path,
+  save.dir,
   note,
   fileEncoding = "latin1",
-  save_pred = FALSE
+  save.pred = TRUE
 )
 }
 \arguments{
@@ -21,14 +21,14 @@ JAGS.summary(
 
 \item{sources}{output from MixSIAR::load_source_data}
 
-\item{path}{connection open to write the results data.frame.}
+\item{save.dir}{connection open to write the results data.frame.}
 
 \item{note}{a character string to add a note at the end of the file name (not set - default).}
 
 \item{fileEncoding}{character string, if non-empty declares the encoding to be used on a file (not a connection) so the character data can be re-encoded
 as they are written, "latin1" (default).}
 
-\item{save_pred}{a boolean to save all the MixSIAR Monte-Carlo chain predictions}
+\item{save.pred}{a boolean to save all the MixSIAR Monte-Carlo chain predictions}
 }
 \description{
 Generate a table with each sample summary of JAGS predictions (e.g. mean, quantiles, etc).

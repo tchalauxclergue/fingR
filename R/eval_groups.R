@@ -7,7 +7,7 @@
 #' @param df.obs A data.frame with the observed source group contributions.
 #' @param df.pred A data.frame with the predicted source group contributions.
 #' @param by A character vector of variables to join by within the dplyr::left_join.
-#' @param path Connection open for writing the test results data.frame. If "" save the file at working directory, if not set (default) the data.frame is not saved.
+#' @param save.dir Connection open for writing the test results data.frame. If "" save the file at working directory, if not set (default) the data.frame is not saved.
 #' @param note A character string to add a note at the end of the file name (not set - default).
 #' @param fileEncoding A character string, if non-empty declares the encoding to be used on a file (not a connection) so the character data can be re-encoded
 #' as they are written, "latin1" (default).
@@ -18,7 +18,7 @@
 #' @author Thomas Chalaux-Clergue
 #'
 #' @export
-eval.groups <- function(df.obs, df.pred, by, path, note, fileEncoding = "latin1"){
+eval.groups <- function(df.obs, df.pred, by, save.dir, note, fileEncoding = "latin1"){
 
   require(dplyr)
   require(utils)
@@ -67,15 +67,15 @@ eval.groups <- function(df.obs, df.pred, by, path, note, fileEncoding = "latin1"
   stats.df <- cbind(cbind("Type" = type.name, "Source" = group.name), stats.df)
 
 
-  if(!missing(path)){
+  if(!missing(save.dir)){
     file.name1 <- "ObsPred"
     file.name2 <- "stats"
     if(!missing(note)){
       file.name1 <- paste(file.name1, note, sep="_")
       file.name2 <- paste(file.name2, note, sep="_")
     }
-    utils::write.csv(df.OP, paste(path, file.name1, ".csv", sep=""), row.names = F, fileEncoding = fileEncoding)
-    utils::write.csv(stats.df, paste(path, file.name2, ".csv", sep=""), row.names = F, fileEncoding = fileEncoding)
+    utils::write.csv(df.OP, paste(save.dir, file.name1, ".csv", sep=""), row.names = F, fileEncoding = fileEncoding)
+    utils::write.csv(stats.df, paste(save.dir, file.name2, ".csv", sep=""), row.names = F, fileEncoding = fileEncoding)
   }
   return(stats.df)
 }

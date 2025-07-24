@@ -11,9 +11,9 @@ run.BMM(
   sample.id,
   tracers,
   uncertainty,
-  isotope.ratio,
-  isotope.prop,
-  isotopes.unc,
+  iso.ratio,
+  iso.prop,
+  iso.uncer,
   save.dir,
   note,
   fileEncoding = "latin1",
@@ -40,11 +40,11 @@ run.BMM(
 
 \item{uncertainty}{Character vector. Optional column names for uncertainty values of the tracers.}
 
-\item{isotope.ratio}{Character vector. Optional column names for the property isotopes ratio (e.g. d13C).}
+\item{iso.ratio}{Character vector. Optional column names for the non-linear property ratio, such as isotopes (e.g. d13C).}
 
-\item{isotope.prop}{Character vector. Optional column names for the concentration properties of the respective isotopes (e.g. TOC).}
+\item{iso.prop}{Character vector. Optional column names for the concentration of the non-linear properties respective properties (e.g. TOC for d13C).}
 
-\item{isotopes.unc}{Character vector. Optional column names for isotopes uncertainties (e.g. d13C_uncertainty).}
+\item{iso.uncer}{Character vector. Optional column names for non-linear properties uncertainties (e.g. d13C_uncertainty).}
 
 \item{save.dir}{Character. Optional directory path for saving the results.}
 
@@ -73,8 +73,8 @@ A data frame with the estimated source contributions for each target sample.
 }
 \description{
 Runs the Bayesian Mixing Model (BMM) to estimate source contributions for given target samples. Source contribution are estimated by minimising the sum of squared residuals (SSR) of the mass balance un-mixing model.
-Manage isotopic ratio for tracers specified within \code{isotope.prop}, \code{isotope.ratio} (optional \code{isotopes.unc})
+Manage isotopic ratio for tracers specified within \code{iso.prop}, \code{iso.ratio} (optional \code{iso.uncer})
 }
 \author{
-Thomas Chalaux-Clergue & Rémi Bizeul
+Thomas Chalaux-Clergue, Rémi Bizeul & Amaury Bardelle
 }

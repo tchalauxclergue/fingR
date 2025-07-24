@@ -3,7 +3,7 @@
 #' Convert data to log, while being careful to negatives values.
 #' If some values are negative performs a shift of all values to the minimum value increased by a certain percentage,  10% (.1 - default).
 #'
-#' @param data a (non-empty) numeric vector of data .
+#' @param data a (non-empty) numeric vector of data
 #' @param shift a numeric value of the size of shift, .1 (default)
 #'
 #' @author Thomas Chalaux-Clergue

@@ -21,7 +21,7 @@ source.norm.distrib <- function(data, class, tracers, n = 2500, multivar = FALSE
   MND.sources.L <- list()
 
   # for every class type
-  for(lvl in levels(as.factor(data[[class]]))){
+  for (lvl in levels(as.factor(data[[class]]))) {
 
     MND <- data %>%
       dplyr::filter(.data[[class]] == lvl) %>% # keep only one class
@@ -33,12 +33,12 @@ source.norm.distrib <- function(data, class, tracers, n = 2500, multivar = FALSE
 
     source.name <- lvl
 
-    if(multivar == FALSE){ # normal distribution
+    if (multivar == FALSE) { # normal distribution
       sigma <- as.matrix(summarize_all(MND, sd)) # each property standard variation
 
       # generate 2500 normal distributed samples for each property
       norm.d <- c()
-      for(i in 1:length(colnames(sigma))){
+      for (i in 1:length(colnames(sigma))) {
         norm.d <- cbind(norm.d, rnorm(n = 2500, mean = mu[i], sd = sigma[i]))
       }
       colnames(norm.d) <- colnames(sigma)

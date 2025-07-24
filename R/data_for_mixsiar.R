@@ -6,7 +6,7 @@
 #' @param class A character string corresponding to the column that contains the sources classes (source 1, source 2, etc) and target information.
 #' @param target A character string corresponding to the way "Target" (default) are named.
 #' @param tracers A vector listing the tracers names.
-#' @param sample.name A character string correspond to samples id/name column.
+#' @param sample.id A character string correspond to samples id/name column.
 #' @param save.dir Connection open for writing the test results data.frame. If "" save the file at working directory.
 #' @param note A character string to add a note at the end of the file name (not set - default).
 #' @param fileEncoding character string, if non-empty declares the encoding to be used on a file (not a connection) so the character data can be re-encoded
@@ -16,14 +16,14 @@
 #' @author Thomas Chalaux-Clergue
 #'
 #' @export
-data.for.MixSIAR <- function(data, class, target, tracers, sample.name, save.dir, note, fileEncoding = "latin1", show.data = FALSE){
+data.for.MixSIAR <- function(data, class, target, tracers, sample.id, save.dir, note, fileEncoding = "latin1", show.data = FALSE){
 
   require(dplyr)
 
   # mix's data
   mix.dt <- data %>%
     dplyr::filter(.data[[class]] == target) %>%
-    dplyr::select(all_of(c(sample.name, tracers)))
+    dplyr::select(all_of(c(sample.id, tracers)))
 
   # source's data
   sources <- data %>%

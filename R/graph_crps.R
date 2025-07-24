@@ -9,12 +9,13 @@
 #' @param note A character string to add a note at the end of the file name (not set - default).
 #' @param width,height,units Plot size in units ("in", "cm", "mm", or "px"). If not supplied, uses the size of current graphics device.
 #'
-#' @author Thomas Chalaux Clergue
+#' @author Thomas Chalaux-Clergue
 #'
 #' @export
 graph.crps <- function(obs, crps, by, path, note, units = c("cm"), width = 10, height = 10, line0 = TRUE){
 
   require(dplyr)
+  require(ggplot2)
   require(ggthemes)
 
   OCRPS <- dplyr::left_join(obs, crps, by = by,
@@ -22,27 +23,27 @@ graph.crps <- function(obs, crps, by, path, note, units = c("cm"), width = 10, h
 
   groups <- colnames(crps)[2:ncol(crps)]
 
-  for(grp in groups){
-    plt <- ggplot() + aes(x = OCRPS[[colnames(OCRPS)[grepl(grp, colnames(OCRPS)) & grepl("OBS", colnames(OCRPS))]]],
+  for (grp in groups) {
+    plt <- ggplot2::ggplot() + aes(x = OCRPS[[colnames(OCRPS)[grepl(grp, colnames(OCRPS)) & grepl("OBS", colnames(OCRPS))]]],
                    y = OCRPS[[colnames(OCRPS)[grepl(grp, colnames(OCRPS)) & grepl("CRPS", colnames(OCRPS))]]]) +
-      geom_point(pch = 1) +
+      ggplot2::geom_point(pch = 1) +
       ## regression line
-      geom_smooth(method = "loess", formula = y~poly(x,2), se = FALSE) +
+      ggplot2::geom_smooth(method = "loess", formula = y~poly(x,2), se = FALSE) +
       # scale graph
-      scale_x_continuous(paste(grp, "proportion"), limits = c(0, 1), breaks = seq(0, 1, .2)) +
-      scale_y_continuous("CRPS", limits = c(0, 1), breaks = seq(0, 1, .2)) +
+      ggplot2::scale_x_continuous(paste(grp, "proportion"), limits = c(0, 1), breaks = seq(0, 1, .2)) +
+      ggplot2::scale_y_continuous("CRPS", limits = c(0, 1), breaks = seq(0, 1, .2)) +
       # theme
-      theme_bw() +
-      theme(legend.position = "none", axis.title = element_text(size = 11), axis.text.y = element_text(size = 10), axis.text.x = element_text(size = 9, angle = 45, hjust = 1))
+      ggplot2::theme_bw() +
+      ggplot2::theme(legend.position = "none", axis.title = element_text(size = 11), axis.text.y = element_text(size = 10), axis.text.x = element_text(size = 9, angle = 45, hjust = 1))
 
-    if(isTRUE(line0)){
-      plt <- plt + geom_hline(yintercept = 0, linetype = "dashed", linewidth = 0.4)
+    if (isTRUE(line0)) {
+      plt <- plt + ggplot2::geom_hline(yintercept = 0, linetype = "dashed", linewidth = 0.4)
     }
 
     file.name <- paste("contrib_crps", grp, sep = "_")
-    if(!missing(note)){
+    if (!missing(note)) {
       file.name <- paste(file.name, note, sep = "_")
     }
-    ggsave(filename = paste(file.name, ".PDF", sep = ""), plot = plt, path = path, units = units, width = width, height = height)
+    ggsave(filename = paste0(file.name, ".PDF"), plot = plt, path = path, units = units, width = width, height = height)
   }
 }

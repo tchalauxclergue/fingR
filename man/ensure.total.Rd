@@ -6,9 +6,9 @@
 \usage{
 ensure.total(
   data,
-  sample.name,
+  sample.id,
   digits = 3,
-  path,
+  save.dir,
   note,
   fileEncoding = "latin1"
 )
@@ -16,9 +16,15 @@ ensure.total(
 \arguments{
 \item{data}{A data.frame containing predicted contributions for each sources and sample names/id.}
 
-\item{sample.name}{A character corresponding to the name of the column with sample names/id. If not set the function use the first column.}
+\item{sample.id}{A character corresponding to the name of the column with sample names/id. If not set the function use the first column.}
 
 \item{digits}{nteger indicating the number of decimal places (round) or significant digits (signif) to be used. For round, negative values are allowed (see base::Round for 'Details’).}
+
+\item{save.dir}{Connection open for writing the results data.frame. If "" save the file at working directory.}
+
+\item{note}{A character string to add a note at the end of the file name (not set - default).}
+
+\item{fileEncoding}{character string, if non-empty declares the encoding to be used on a file (not a connection) so the character data can be re-encoded as they are written, "latin1" (default).}
 }
 \value{
 a data.frame.

@@ -4,7 +4,7 @@
 \alias{eval.groups}
 \title{Evaluation of source groups prediction quality}
 \usage{
-eval.groups(df.obs, df.pred, by, path, note, fileEncoding = "latin1")
+eval.groups(df.obs, df.pred, by, save.dir, note, fileEncoding = "latin1")
 }
 \arguments{
 \item{df.obs}{A data.frame with the observed source group contributions.}
@@ -13,7 +13,7 @@ eval.groups(df.obs, df.pred, by, path, note, fileEncoding = "latin1")
 
 \item{by}{A character vector of variables to join by within the dplyr::left_join.}
 
-\item{path}{Connection open for writing the test results data.frame. If "" save the file at working directory, if not set (default) the data.frame is not saved.}
+\item{save.dir}{Connection open for writing the test results data.frame. If "" save the file at working directory, if not set (default) the data.frame is not saved.}
 
 \item{note}{A character string to add a note at the end of the file name (not set - default).}
 

@@ -4,11 +4,11 @@ citEntry(entry  = "Manual",
          author = "Chalaux-Clergue, Thomas and Bizeul, Rémi and Amaury, Bardelle",
          year   = 2025,
          month  = 7,
-         note   = "R package version 2.1.3",
+         note   = "R package version 2.1.4",
          doi    = "https://doi.org/10.5281/zenodo.8293595",
          url    = "https://github.com/tchalauxclergue/fingR",
          textVersion = paste("Chalaux-Clergue et al. (2025). ", 
                "fingR: A package to support sediment source fingerprinting studies, ",
                "Zenodo [Package]: https://doi.org/10.5281/zenodo.8293595, ",
                "Github [Package]: https://github.com/tchalauxclergue/fingR, ",
-               " Version = 2.1.3",".",sep="") )
+               " Version = 2.1.4",".",sep="") )

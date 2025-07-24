@@ -22,7 +22,7 @@ developed.](http://www.repostatus.org/badges/latest/active.svg)
 # Overview
 
 The `fingR` is a comprehensive package designed to support Sediment
-Source Fingerprinting studies.It provides essential tools including:
+Source Fingerprinting studies. It provides essential tools including:
 dataset characterisation, tracer selection from analysed properties
 using the three-step method, modelling of source contributions using the
 Bayesian Mixing Model (BMM), and evaluation of model predictions using
@@ -33,7 +33,12 @@ The `fingR` package is available in this
 [Github](https://github.com/tchalauxclergue/fingR) repository and
 archived on [Zenodo](https://zenodo.org/records/10796375).
 
-# Table of content
+<details>
+
+<summary>
+
+<strong>Table of Contents</strong>
+</summary>
 
 <!-- toc -->
 
@@ -50,7 +55,7 @@ archived on [Zenodo](https://zenodo.org/records/10796375).
     - [2.2 - Discriminant power](#22---discriminant-power)
     - [2.3 - Identified tracers: conservative and discriminant
       properties](#23---identified-tracers-conservative-and-discriminant-properties)
-    - [2.4 - Discriminat Function Analysis stepwise
+    - [2.4 - Discriminant Function Analysis stepwise
       selection](24---discriminat-function-analysis-stepwise-selection)
   - [3 - Source Contribution
     Modelling](#3---source-contribution-modelling)
@@ -89,6 +94,8 @@ archived on [Zenodo](https://zenodo.org/records/10796375).
 
 <!-- tocstop -->
 
+</details>
+
 # Installation
 
 ``` r
@@ -96,10 +103,10 @@ archived on [Zenodo](https://zenodo.org/records/10796375).
 library(devtools)
 
 # Install the most recent version from GitHub - check github page for updates
-devtools::install_github("https://github.com/tchalauxclergue/fingR/releases/tag/2.1.3", ref = "master", force = T)
+devtools::install_github("https://github.com/tchalauxclergue/fingR/releases/tag/2.2.0", ref = "master", force = T)
 
 # Alternatively, install from a downloaded '.tar.gz' file
-devtools::install_local("path_to_file/fingR_2.1.3.tar.gz", repos = NULL)
+devtools::install_local("path_to_file/fingR_2.2.0.tar.gz", repos = NULL)
 # 'path_to_file' should be modified accordingly to your working environment
 ```
 
@@ -173,11 +180,11 @@ using three potential sources.
 library(dplyr)
 
 # Create a single dataset with metadata and data information
-database <- dplyr::left_join(x = db.metadata,
-                             y = db.data,
-                             by = join_by(IGSN, Sample_name)) %>%
-  dplyr::filter(Sample_size == "< 63 µm") %>% # Filter sample fraction
-  dplyr::filter(Class_decontamination != "Remediated") # Remove remediated cropland to keep 3 potential sources
+database <- dplyr::left_join(x = db.metadata,                      # Metadata data.frame
+                             y = db.data,                          # Data data.frame
+                             by = join_by(IGSN, Sample_name)) %>%  # In common variables
+  dplyr::filter(Sample_size == "< 63 µm") %>%                      # Filter sample fraction
+  dplyr::filter(Class_decontamination != "Remediated")             # Remove remediated cropland to keep 3 potential sources
 ```
 
 Therefore, the final dataset contains three potential sources
@@ -201,10 +208,10 @@ i.e. `prop.values`.
 # colnames(database)
 
 # Select the column names of the properties values
-prop.values <- database %>%
-  dplyr::select(TOC_PrC, TN_PrC, # organic matter
-                EDXRF_Al_mg.kg.1:EDXRF_Zr_mg.kg.1) %>% # elemental geochemistry
-  base::names() # Extract column names
+prop.values <- database %>%                            # Database data.frame
+  dplyr::select(TOC_PrC, TN_PrC,                       # Organic matter properties
+                EDXRF_Al_mg.kg.1:EDXRF_Zr_mg.kg.1) %>% # Elemental geochemistry properties
+  base::names()                                        # Extract column names
 ```
 
 ``` r
@@ -225,13 +232,13 @@ column names, as they can be selected from the property column names.
 
 ``` r
 # Select the column names of the property measurement uncertainties values
-prop.uncertainties <- database %>%
-  dplyr::select(TOC_SD, TN_SD,
-                EDXRF_Al_RMSE:EDXRF_Zr_RMSE) %>%
-  base::names()
+prop.uncertainties <- database %>%               # Database data.frame
+  dplyr::select(TOC_SD, TN_SD,                   # Organic matter properties
+                EDXRF_Al_RMSE:EDXRF_Zr_RMSE) %>% # Elemental geochemistry uncertainties
+  base::names()                                  # Extract column names
 
 # Set property names to property uncertainty names for easier selection
-base::names(prop.uncertainties) <- prop.values
+base::names(prop.uncertainties) <- prop.values   # Set properties values as names for uncertainties
 ```
 
 ``` r
@@ -258,8 +265,8 @@ relative uncertainty if it is greater than 5 %. The result of this
 function should encourage the user to consider the quality of his data.
 
 ``` r
-fingR::data.watcher(data = database,                 # database data.frame
-                    properties = prop.values,        # vector of property labels
+fingR::data.watcher(data = database,                 # Database data.frame
+                    properties = prop.values,        # Vector of property labels
                     prop.uncer = prop.uncertainties) # vector of measurement uncertainty labels
 #> 
 #> Following column(s) contain(s) some negative values: EDXRF_Cr_mg.kg.1.
@@ -349,15 +356,15 @@ provided to `save.dir`, the function write two CSV files:
 “Range_test\[\_note\].csv” corresponding to `results.df`.
 
 ``` r
-rt.results <- fingR::range.tests(data = database,
-                                 class = "Class_decontamination",
-                                 mixture = "Target",
-                                 properties = prop.values,
-                                 sample.id = "Sample_name",
-                                 criteria = c("mean.sd")
-                                 # MM.error = c(0.1),      # Optional
-                                 # save.dir = dir.example, # Optional
-                                 # note = "example"        # Optional
+rt.results <- fingR::range.tests(data = database,                 # Data.frame with source and mixture information
+                                 class = "Class_decontamination", # Column with classification or grouping or sources and mixtures
+                                 mixture = "Target",              # Labeling of mixtures in `class`
+                                 properties = prop.values,        # Vector of property labels
+                                 sample.id = "Sample_name",       # Identifier for individual samples
+                                 criteria = c("mean.sd"),         # Range test critirion/criteria (options: "MM", "MMe", "whiskers", "hinge", "mean", "mean.sd", "median", or "all")
+                                 # MM.error = c(0.1),             # Optional - Set min-max +/- error as a percentage (here 10 %)
+                                 # save.dir = dir.example,        # Optional - Directory path to save results
+                                 # note = "example"               # Optional - Additional file name annotation
                                  )
 ```
 
@@ -401,12 +408,12 @@ contains the names of the properties that were identified as
 conservative according to each criterion.
 
 ``` r
-prop.cons <- fingR::is.conservative(data = rt.results$results.df,
-                                    # property = "Property",
-                                    # test.format = "RT",
-                                    # position = 2,
-                                    # separator = "_",
-                                    # note = "example"
+prop.cons <- fingR::is.conservative(data = rt.results$results.df, # Data.frame of the range test results (generated by fingR::range.tests())
+                                    # property = "Property",      # Optional - Column with property labels
+                                    # test.format = "RT",         # Optional - Common pattern in test column labels
+                                    # position = 2,               # Optional - Position of test column labels in column names
+                                    # separator = "_",            # Optional - Character to split test column labels
+                                    # note = "example"            # Optional - Additional file name annotation
                                     )
 ```
 
@@ -445,9 +452,11 @@ to the `save.dir` argument:
 - ’Discriminant_pairs\[\_note\].csv’, generated if
   `save.discrim.tests = TRUE` (default), contains the *p* value of each
   two-samples KS tests for each property. Set `return.tests = TRUE` to
-  return this table as `$result.KS` (default is `FALSE`). Of note, when
-  using the KW test, the KS test results can also help verify the KW
-  assumption of similar distribution shape across groups.
+  return this table as `$result.KS` (default is `FALSE`).
+
+> [!WARNING]
+> When using the KW test, the KS test results can also help verify
+> the KW assumption of similar distribution shape across groups.
 
 - ’Discriminant_tests\[\_note\].csv’ summarises the results from KS or
   KW tests.
@@ -469,17 +478,16 @@ to the `save.dir` argument:
 Example for KW test:
 
 ``` r
-KW.results <- fingR::discriminant.test(data = database,
-                                       class = "Class_decontamination",
-                                       mixture = "Target",
-                                       test = "KW",
-                                       properties = prop.values,
-                                       p.level = .05,
-                                       # min.discriminant = 1,
-                                       # save.discrim.tests = TRUE,
-                                       return.tests = TRUE,
-                                       # save.dir = dir.example,
-                                       # note = "example"
+KW.results <- fingR::discriminant.test(data = database,                 # Data.frame with source and mixture information
+                                       class = "Class_decontamination", # Column with classification or grouping or sources and mixtures
+                                       mixture = "Target",              # Labeling of mixtures in `class`
+                                       test = "KW",                     # Performed test: Kruskal-Wallis (KW) or Kolmogorov-Smornov (KS)
+                                       properties = prop.values,        # Vector of property labels
+                                       p.level = .05,                   # Optional - significance level value (i.e. p value)
+                                       # save.discrim.tests = TRUE,     # Optional - If source couple tests should be saved
+                                       # save.dir = dir.example,        # Optional - Directory path to save results
+                                       # note = "example",              # Optional - Additional file name annotation
+                                       return.tests = TRUE              # Optional - If source couple tests should be return
                                        )
 ```
 
@@ -510,17 +518,17 @@ KW.results$results.df[1:5,]
 Example for KS test:
 
 ``` r
-KS.results <- fingR::discriminant.test(data = database,
-                                       class = "Class_decontamination",
-                                       mixture = "Target",
-                                       test = "KS",
-                                       properties = prop.values,
-                                       p.level = .01,
-                                       # min.discriminant = 1,
-                                       # save.discrim.tests = TRUE,
-                                       return.tests = TRUE,
-                                       # save.dir = dir.example,
-                                       # note = "example"
+KS.results <- fingR::discriminant.test(data = database,                 # Data.frame with source and mixture information
+                                       class = "Class_decontamination", # Column with classification or grouping or sources and mixtures
+                                       mixture = "Target",              # Labeling of mixtures in `class`
+                                       test = "KS",                     # Performed test: Kruskal-Wallis (KW) or Kolmogorov-Smornov (KS)
+                                       properties = prop.values,        # Vector of property labels
+                                       p.level = .01,                   # Optional - significance level value (i.e. p value)
+                                       min.discriminant = 1,            # Optional - KS only. Minimum number of significantly different source couples
+                                       save.discrim.tests = TRUE,       # Optional - If source couple tests should be saved
+                                       # save.dir = dir.example,        # Optional - Directory path to save results
+                                       # note = "example",              # Optional - Additional file name annotation
+                                       return.tests = TRUE              # Optional - If source couple tests should be return
                                        )
 ```
 
@@ -552,13 +560,14 @@ frame produced by the `discriminant.test` function, however, it is
 possible to set it for other data frame format by setting its arguments.
 
 ``` r
-prop.discrim <- fingR::is.discriminant(KS.results$results.df,
-                                       # property = "Property",
-                                       # test.format = "Kruskal.Wallis_p.value",
-                                       # test.pos = 1,
-                                       # sep.format = "_",
-                                       # p.level = 0.01,
-                                       # note = "example"
+prop.discrim <- fingR::is.discriminant(KS.results$results.df,                    # data.frame with the information regarding discriminant power (TRUE/FALSE)
+                                       ## Folowing arguments are needed if the discrimant power test is not performed with `fingR::discriminant.test`
+                                       # property = "Property",                  # Optional - Column with property names
+                                       # test.format = "Kruskal.Wallis_p.value", # Optional - Test label pattern
+                                       # test.pos = 1,                           # Optional - Position of the test name in `test.format`
+                                       # sep.format = "_",                       # Optional - Separator used in `test.format`
+                                       # p.level = 0.01,                         # Optional - significance level value (i.e. p value)
+                                       # note = "example"                        # Optional - Additional file name annotation
                                        )
 ```
 
@@ -578,8 +587,8 @@ The properties that pass both the evaluation of conservative behaviour
 `selected.tracers` function, which list them in a vector.
 
 ``` r
-tracers <- fingR::is.tracers(cons = prop.cons,
-                             discrim = prop.discrim)
+tracers <- fingR::is.tracers(cons = prop.cons,        # List of properties considered as conservative
+                             discrim = prop.discrim)  # List of properties considered as discriminant
 ```
 
 ``` r
@@ -608,12 +617,12 @@ selection based on the tracer selected, and returns a vector containing
 the retained tracers.
 
 ``` r
-tracers.SW <- fingR::stepwise.selection(data = database,
-                                        class = "Class_decontamination",
-                                        tracers = tracers$mean.sd_KS,
-                                        target = "Target",
-                                        # save.dir = dir.example,
-                                        # note = "example"
+tracers.SW <- fingR::stepwise.selection(data = database,                 # Data.frame with source and mixture information
+                                        class = "Class_decontamination", # Column with classification or grouping or sources and mixtures
+                                        tracers = tracers$mean.sd_KS,    # Vector of selected tracers
+                                        target = "Target",               # Labeling of mixtures in `class`
+                                        # save.dir = dir.example,        # Optional - Directory path to save results
+                                        # note = "example"               # Optional - Additional file name annotation
                                         )
 ```
 
@@ -629,8 +638,8 @@ insights. Both tracer selection vectors could be joint in a list as
 follows:
 
 ``` r
-all.tracers <- list("mean.sd_KS" = tracers$mean.sd_KS,
-                    "mean.sd_KS_DFA" = tracers.SW)
+all.tracers <- list("mean.sd_KS" = tracers$mean.sd_KS, # Vector of selected tracers
+                    "mean.sd_KS_DFA" = tracers.SW)     # Vector of selected tracers after the DFA stepwise selection
 ```
 
 ``` r
@@ -674,17 +683,17 @@ save directory specified by the `save.dir` argument.
 
 ``` r
 # Generate virtual mixture source contributions
-VM.contrib <- fingR::VM.contrib.generator(n.sources = 3,
-                                          min = 0,   # Optional
-                                          max = 100, # Optional
-                                          step = 5,  # Optional
-                                          sources.class = c("Forest", "Subsoil", "Undecontaminated"), # Optional
-                                          save.dir = dir.example,                                     # Optional
-                                          # note = "example"
-                                          # VM.name = "Sample_name",
-                                          # fileEncoding = "latin1",
-                                          # return = TRUE,
-                                          # save = TRUE
+VM.contrib <- fingR::VM.contrib.generator(n.sources = 3,                                              # Number of sources groups
+                                          min = 0,                                                    # Minimum contribution value
+                                          max = 100,                                                  # Maximum contribution value (here in %)
+                                          step = 5,                                                   # Step between two contribution levels (here in %)
+                                          sources.class = c("Forest", "Subsoil", "Undecontaminated"), # Optional - Label for source groups
+                                          VM.name = "Sample_name",                                    # Optional - Virtual mixtures id column name 
+                                          save.dir = dir.example,                                     # Optional - Directory path to save results
+                                          # note = "example",                                         # Optional - Additional file name annotation
+                                          # return = TRUE,                                            # Optional - To return VM data frames
+                                          # save = TRUE,                                              # Optional - To save VM data frames
+                                          # fileEncoding = "latin1",                                  # Optional - Encoding format used to save data
                                           )
 ```
 
@@ -737,17 +746,17 @@ samples to the one of the virtual mixture by setting
 models.
 
 ``` r
-VM <- fingR::VM.builder(data = database,
-                        material = "Material",
-                        source.name = "Source",
-                        class = "Class_decontamination",
-                        tracers = tracers$mean.sd_KS,
-                        uncertainty = unname(prop.uncertainties[tracers$mean.sd_KS]),  # easy selection of uncertainty labels
-                        contributions = VM.contrib,
-                        VM.name = "Sample_name",
-                        add.sources = TRUE,  # Add source information at the end of the VM data frames
-                        save.dir = dir.example,
-                        # note = "example"
+VM <- fingR::VM.builder(data = database,                 # Data.frame with source and mixture information
+                        material = "Material",           # Column with classification betwen source and target
+                        source.name = "Source",          # Labeling of source samples in `material`
+                        class = "Class_decontamination", # Column with classification or grouping or sources and mixtures
+                        tracers = tracers$mean.sd_KS,    # Vector of tracers
+                        uncertainty = unname(prop.uncertainties[tracers$mean.sd_KS]), # Vector of tracer uncertainties - note: easy selection of uncertainty labels
+                        contributions = VM.contrib,      # Virtual mixtures contributions
+                        VM.name = "Sample_name",         # Virtual mixtures id column name
+                        add.sources = TRUE,              # Add source information at the end of the VM data frames
+                        save.dir = dir.example,          # Optional - Directory path to save results
+                        # note = "example"               # Optional - Additional file name annotation
                         )
 ```
 
@@ -773,18 +782,18 @@ contribution range as a vector (`VM.range`) and the step (`VM.step`),
 such as below:
 
 ``` r
-VM <- fingR::VM.builder(data = database,
-                        material = "Material",
-                        source.name = "Source",
-                        class = "Class_decontamination",
-                        tracers = tracers$mean.sd_KS,
-                        uncertainty = unname(prop.uncertainties[tracers$mean.sd_KS]),
-                        VM.range = c(0, 100), # specify the range
-                        VM.step = 5, # specify the step
-                        VM.name = "Sample_name",
-                        add.sources = TRUE,
-                        save.dir = dir.example,
-                        # note = "example"
+VM <- fingR::VM.builder(data = database,                 # Data.frame with source and mixture information
+                        material = "Material",           # Column with classification betwen source and target
+                        source.name = "Source",          # Labeling of source samples in `material`
+                        class = "Class_decontamination", # Column with classification or grouping or sources and mixtures
+                        tracers = tracers$mean.sd_KS,    # Vector of tracers
+                        uncertainty = unname(prop.uncertainties[tracers$mean.sd_KS]), # Vector of tracer uncertainties - note: easy selection of uncertainty labels
+                        VM.range = c(0, 100),            # Optional - Range of VM contributions
+                        VM.step = 5,                     # Optional - Step between two contribution levels
+                        VM.name = "Sample_name",         # Virtual mixtures id column name
+                        add.sources = TRUE,              # Add source information at the end of the VM data frames
+                        save.dir = dir.example,          # Optional - Directory path to save results
+                        note = "VM"                      # Optional - Additional file name annotation
                         )
 ```
 
@@ -811,9 +820,11 @@ recommended to create a dedicated folder to organise them, and keep the
 directory with `dir.modelling`.
 
 ``` r
-dir.create(file.path(dir.example, "Modelling/"), showWarnings = FALSE)
-dir.modelling <- paste0(dir.example, "Modelling/")
+dir.create(file.path(dir.example, "Modelling/"), showWarnings = FALSE) # Create a folder
+dir.modelling <- paste0(dir.example, "Modelling/")                     # Keep folder path
 ```
+
+------------------------------------------------------------------------
 
 ### 3.2.1 - Bayesian Mean Model (BMM)
 
@@ -821,15 +832,15 @@ Similarly, create a dedicated folder for Bayesian Mean modelling (BMM),
 and keep the directory with `dir.mod.BMM.`
 
 ``` r
-dir.create(file.path(dir.modelling, "BMM/"), showWarnings = FALSE)
-dir.mod.BMM <- paste0(dir.modelling, "BMM/")
+dir.create(file.path(dir.modelling, "BMM/"), showWarnings = FALSE) # Create a folder
+dir.mod.BMM <- paste0(dir.modelling, "BMM/")                       # Keep folder path
 ```
 
 The Bayesian Mean Model (BMM) is a statistical approach that uses
 Bayesian inference to estimate the mean of a population or dataset
 ([Laceby and Olley,
-2015](https://onlinelibrary.wiley.com/doi/10.1002/hyp.10287);[Batista et
-al., 2019](http://link.springer.com/10.1007/s11368-018-2199-5)). This
+2015](https://onlinelibrary.wiley.com/doi/10.1002/hyp.10287); [Batista
+et al., 2019](http://link.springer.com/10.1007/s11368-018-2199-5)). This
 approach incorporates prior knowledge and observed data to calculate a
 posterior distribution for the mean, providing a probabilistic framework
 that accounts for uncertainty in the estimates. The BMM approach that
@@ -842,28 +853,30 @@ The `run.BMM` function has been developed to allow to simplify the use
 of the BMM model. The number of iterations should be set in `n.iter`,
 between 2500 and 7500, to ensure convergence of the Monte Carlo chain.
 
-> Setting `n.iter` to 30 allows the structure to be tested before the
-> actual modelling is carried out.
-
-Of note, it is not compulsory to provide the actual measurement
-uncertainty of tracers to `uncertainty` argument, although, it is
-hilghly recommended.
-
 The function returns a data frame containing the individual iteration
 source contributions for each mixture and, if `save.dir` is set, saves
 it as ’BMM_prevision\[\_note\].csv
 
+> [!TIP]
+> Setting `n.iter` to 30 allows the structure to be tested before
+> the actual modelling is carried out.
+
+> [!NOTE]
+> It is not compulsory to provide the actual measurement  uncertainty
+> of tracers to `uncertainty` argument, although, it is highly
+> recommended.
+
 ``` r
 
-BMM.mix <- fingR::run.BMM(data = database,
-                          class = "Class_decontamination",
-                          mixture = "Target",
-                          sample.id = "Sample_name",
-                          tracers = tracers$mean.sd_KS,
-                          uncertainty = unname(prop.uncertainties[tracers$mean.sd_KS]),
-                          n.iter = 30, # test version
-                          save.dir = dir.mod.BMM,
-                          #note = "example"
+BMM.mix <- fingR::run.BMM(data = database,                 # Data.frame with source and mixture information
+                          class = "Class_decontamination", # Column with classification or grouping or sources and mixtures
+                          mixture = "Target",              # Labeling of mixtures in `class`
+                          sample.id = "Sample_name",       # Identifier for individual samples
+                          tracers = tracers$mean.sd_KS,    # Vector of tracers
+                          uncertainty = unname(prop.uncertainties[tracers$mean.sd_KS]), # Vector of tracer uncertainties
+                          n.iter = 30,                     # Number of iteration - TEST VERSION
+                          save.dir = dir.mod.BMM,          # Optional - Directory path to save results
+                          # note = "example"               # Optional - Additional file name annotation
                           )
 ```
 
@@ -875,23 +888,27 @@ taking into account the relative content of the related property (see
 further explanation). Several isotopic ratios could be used, bearing in
 mind that the order must be identical between `isotope.ratio`,
 isotope.prop and `isotopes.unc`. For example, when using the
-δ<sup>13\<\>C isotopic ratio in organic matter, the run.BMM function
+δ<sup>13</sup>C isotopic ratio in organic matter, the run.BMM function
 should be set as follows:
+
+> [!NOTE]
+> `isotope.ratio`, `isotope.prop`, and `isotopes.unc` work for any
+> type of non linear properties.
 
 ``` r
 
-BMM.mix.iso <- fingR::run.BMM(data = database,
-                              class = "Class_decontamination",
-                              mixture = "Target",
-                              sample.id = "Sample_name",
-                              tracers = tracers$mean.sd_KS,
-                              uncertainty = unname(prop.uncertainties[tracers$mean.sd_KS]),
-                              isotope.ratio = c("d13C_PrM"),                             # Optional: Character vector containing isotopic ratios
-                              isotope.prop = c("TOC_PrC"),                               # Optional: Character vector containing isotopic ratios respective properties
-                              isotopes.unc = c("d13C_SD"),                               # Optional: Character vecotr containing uncertainty of the isotopic ratios
-                              n.iter = 30, # test version
-                              save.dir = dir.mod.BMM,
-                              #note = "example"
+BMM.mix.iso <- fingR::run.BMM(data = database,                 # Data.frame with source and mixture information
+                              class = "Class_decontamination", # Column with classification or grouping or sources and mixtures
+                              mixture = "Target",              # Labeling of mixtures in `class`
+                              sample.id = "Sample_name",       # Identifier for individual samples
+                              tracers = tracers$mean.sd_KS,    # Vector of tracers
+                              uncertainty = unname(prop.uncertainties[tracers$mean.sd_KS]), # Vector of tracer uncertainties
+                              isotope.ratio = c("d13C_PrM"),   # Optional: Character vector containing isotopic ratios
+                              isotope.prop = c("TOC_PrC"),     # Optional: Character vector containing isotopic ratios respective properties
+                              isotopes.unc = c("d13C_SD"),     # Optional: Character vecotr containing uncertainty of the isotopic ratios
+                              n.iter = 30,                     # Number of iteration - TEST VERSION
+                              save.dir = dir.mod.BMM,          # Optional - Directory path to save results
+                              # note = "example"               # Optional - Additional file name annotation
                               )
 ```
 
@@ -906,47 +923,76 @@ including mean value, standard deviation, and various quantiles (2.5, 5,
 ’BMM_contrib\[\_note\].csv’). From this summary, the `BMM.pred` function
 extracts the median and/or mean, `stats = "Median"`, `stats = "Mean"`,
 or `stats = c("Median", "Mean")`, value of source contributions for each
-target mixture (saves ’BMM_ordered_contrib\[\_note\].csv’).
-
-Finally, the `ensure.total` function ensures that the total of the
-predicted source contributions from all sources sum to 1 or 100 % (saves
+target mixture (saves ’BMM_ordered_contrib\[\_note\].csv’). Finally, the
+`ensure.total` function ensures that the total of the predicted source
+contributions from all sources sum to 1 or 100 % (saves
 ’corrected_contrib\[\_note\].csv’).
 
 ``` r
 # Summarise BMM model previsions
-BMM.summary.mix <- fingR::BMM.summary(pred = BMM.mix,
-                                      #sample.id = "mix.names",
-                                      #source = "source",
-                                      #value = "value",
-                                      save.dir = dir.mod.BMM,
-                                      #note = "example"
+BMM.summary.mix <- fingR::BMM.summary(pred = BMM.mix,            # Data.frame with the predicted contributions from BMM
+                                      # sample.id = "mix.names", # Column name for individual sample id
+                                      # source = "source",       # Column name for source information
+                                      # value = "value",         # Column name for individual sample predictions
+                                      save.dir = dir.mod.BMM,    # Optional - Directory path to save results
+                                      # note = "example"         # Optional - Additional file name annotation
                                       )
+```
 
+``` r
+BMM.summary.mix[1:5,]
+#>           mix.names           source  Mean    SD  Q2.5    Q5   Q25   Q50   Q75
+#> 1 ManoDd_2106_00-01           Forest 0.105 0.178 0.001 0.001 0.001 0.001 0.109
+#> 2 ManoDd_2106_00-01          Subsoil 0.516 0.319 0.001 0.001 0.360 0.524 0.750
+#> 3 ManoDd_2106_00-01 Undecontaminated 0.379 0.363 0.001 0.001 0.001 0.364 0.639
+#> 4 ManoDd_2106_01-02           Forest 0.068 0.107 0.001 0.001 0.001 0.008 0.082
+#> 5 ManoDd_2106_01-02          Subsoil 0.721 0.286 0.035 0.126 0.590 0.853 0.939
+#>     Q95 Q97.5
+#> 1 0.496 0.545
+#> 2 0.998 0.998
+#> 3 0.971 0.991
+#> 4 0.336 0.355
+#> 5 0.992 0.998
+```
+
+``` r
 # Extracts the median value of the previsions
-BMM.preds.mix <- fingR::BMM.pred(data = BMM.summary.mix,
-                                 stats = "Median",
-                                 #sample.id = "mix.names",
-                                 #source = "source",
-                                 save.dir = dir.mod.BMM,
-                                 #note = "example" 
+BMM.preds.mix <- fingR::BMM.pred(data = BMM.summary.mix,         # Data.frame with the summary statistics of BMM predicted contribution (usually from `fingR::BMM.summary.mix`)
+                                 stats = "Median",               # Summary statistics for source contribution ("Mean" or "Median")
+                                 # sample.id = "mix.names",      # Column name for individual sample id
+                                 # source = "source",            # Column name for source information
+                                 save.dir = dir.mod.BMM,         # Optional - Directory path to save results
+                                 # note = "example"              # Optional - Additional file name annotation
                                  )
+```
 
+``` r
+BMM.preds.mix[1:5,]
+#>           mix.names Median_Forest Median_Subsoil Median_Undecontaminated
+#> 1 ManoDd_2106_00-01         0.001          0.524                   0.364
+#> 2 ManoDd_2106_01-02         0.008          0.853                   0.049
+#> 3 ManoDd_2106_02-03         0.001          0.739                   0.101
+#> 4 ManoDd_2106_03-04         0.001          0.586                   0.210
+#> 5 ManoDd_2106_04-05         0.001          0.582                   0.375
+```
+
+``` r
 # Ensure that the total predicted contribution sums to 1 or to 100%
-BMM.preds.mixE <- fingR::ensure.total(data = BMM.preds.mix,
-                                      sample.name = "mix.names",
-                                      path = dir.mod.BMM,
-                                      #note = "example"
+BMM.preds.mixE <- fingR::ensure.total(data = BMM.preds.mix,      # Data.frame with each sample predicted source contribution (usually from `fingR::BMM.pred`)
+                                      sample.id = "mix.names",   # Column name for individual sample id
+                                      save.dir = dir.mod.BMM,    # Optional - Directory path to save results
+                                      # note = "example"         # Optional - Additional file name annotation
                                       )
 ```
 
 ``` r
 BMM.preds.mixE[1:5,]
 #>           mix.names Median_Forest Median_Subsoil Median_Undecontaminated total
-#> 1 ManoDd_2106_00-01         0.001          0.751                   0.248     1
-#> 2 ManoDd_2106_01-02         0.014          0.985                   0.001     1
-#> 3 ManoDd_2106_02-03         0.038          0.743                   0.219     1
-#> 4 ManoDd_2106_03-04         0.105          0.720                   0.175     1
-#> 5 ManoDd_2106_04-05         0.001          0.646                   0.353     1
+#> 1 ManoDd_2106_00-01         0.001          0.590                   0.409     1
+#> 2 ManoDd_2106_01-02         0.009          0.938                   0.053     1
+#> 3 ManoDd_2106_02-03         0.001          0.879                   0.120     1
+#> 4 ManoDd_2106_03-04         0.001          0.735                   0.264     1
+#> 5 ManoDd_2106_04-05         0.001          0.607                   0.392     1
 ```
 
 The same sequence of functions is applied for the virtual mixture
@@ -955,54 +1001,56 @@ predictions, resulting in `BMM.summary.VM` from `BMM.summary`,
 
 ``` r
 
-BMM.VM <- fingR::run.BMM(data = VM$full,
-                         class = "Class_decontamination",
-                         mixture = "Virtual Mixture",
-                         sample.id = "Sample_name",
-                         tracers = tracers$mean.sd_KS,
-                         uncertainty = unname(prop.uncertainties[tracers$mean.sd_KS]),
-                         n.iter = 30, # test version
-                         save.dir = dir.mod.BMM,
-                         note = "VM"
+BMM.VM <- fingR::run.BMM(data = VM$full,                  # Data.frame with source and mixture information
+                         class = "Class_decontamination", # Column with classification or grouping or sources and mixtures
+                         mixture = "Virtual Mixture",     # Labeling of mixtures in `class`
+                         sample.id = "Sample_name",       # Identifier for individual samples
+                         tracers = tracers$mean.sd_KS,    # Vector of tracers
+                         uncertainty = unname(prop.uncertainties[tracers$mean.sd_KS]), # Vector of tracer uncertainties
+                         n.iter = 30,                     # Number of iteration - TEST VERSION
+                         save.dir = dir.mod.BMM,          # Optional - Directory path to save results
+                         note = "VM"                      # Optional - Additional file name annotation
                          )
 ```
 
 ``` r
 # Summarise BMM model previsions
-BMM.summary.VM <- fingR::BMM.summary(pred = BMM.VM,
-                                      #sample.id = "mix.names",
-                                      #source = "source",
-                                      #value = "value",
-                                      save.dir = dir.mod.BMM,
-                                      #note = "example"
-                                      )
+BMM.summary.VM <- fingR::BMM.summary(pred = BMM.VM,             # Data.frame with the predicted contributions from BMM
+                                     # sample.id = "mix.names", # Column name for individual sample id
+                                     # source = "source",       # Column name for source information
+                                     # value = "value",         # Column name for individual sample predictions
+                                     save.dir = dir.mod.BMM,    # Optional - Directory path to save results
+                                     note = "VM"                # Optional - Additional file name annotation
+                                     )
 
 # Extracts the median value of the previsions
-BMM.preds.VM <- fingR::BMM.pred(data = BMM.summary.VM,
-                                 stats = "Median",
-                                 #sample.id = "mix.names",
-                                 #source = "source",
-                                 save.dir = dir.mod.BMM,
-                                 #note = "example" 
-                                 )
+BMM.preds.VM <- fingR::BMM.pred(data = BMM.summary.VM,          # Data.frame with the summary statistics of BMM predicted contribution (usually from `fingR::BMM.summary.mix`)
+                                stats = "Median",               # Summary statistics for source contribution ("Mean" or "Median")
+                                # sample.id = "mix.names",      # Column name for individual sample id
+                                # source = "source",            # Column name for source information
+                                save.dir = dir.mod.BMM,         # Optional - Directory path to save results
+                                note = "VM"                     # Optional - Additional file name annotation
+                                )
 
 # Ensure that the total predicted contribution sums to 1 or to 100%
-BMM.pred.VME <- fingR::ensure.total(data = BMM.preds.VM,
-                                      sample.name = "mix.names",
-                                      path = dir.mod.BMM,
-                                      #note = "example"
-                                      )
+BMM.pred.VME <- fingR::ensure.total(data = BMM.preds.VM,        # Data.frame with each sample predicted source contribution (usually from `fingR::BMM.pred`)
+                                    sample.id = "mix.names",    # Column name for individual sample id
+                                    save.dir = dir.mod.BMM,     # Optional - Directory path to save results
+                                    note = "VM"                 # Optional - Additional file name annotation
+                                    )
 ```
 
 ``` r
 BMM.pred.VME[1:5,]
 #>   mix.names Median_Forest Median_Subsoil Median_Undecontaminated total
-#> 1    VM-001         0.007          0.664                   0.329     1
-#> 2    VM-002         0.001          0.899                   0.100     1
-#> 3    VM-003         0.001          0.864                   0.135     1
-#> 4    VM-004         0.001          0.998                   0.001     1
-#> 5    VM-005         0.063          0.936                   0.001     1
+#> 1    VM-001         0.175          0.708                   0.117     1
+#> 2    VM-002         0.068          0.931                   0.001     1
+#> 3    VM-003         0.001          0.937                   0.062     1
+#> 4    VM-004         0.078          0.687                   0.235     1
+#> 5    VM-005         0.001          0.961                   0.038     1
 ```
+
+------------------------------------------------------------------------
 
 ### 3.2.2 - MixSIAR model
 
@@ -1010,8 +1058,8 @@ Create a dedicated folder for MixSIAR modelling, and keep the directory
 with `dir.mod.MixSIAR`.
 
 ``` r
-dir.create(file.path(dir.modelling, "MixSIAR/"), showWarnings = FALSE)
-dir.mod.MixSIAR <- paste0(dir.modelling, "MixSIAR/")
+dir.create(file.path(dir.modelling, "MixSIAR/"), showWarnings = FALSE) # Create a folder
+dir.mod.MixSIAR <- paste0(dir.modelling, "MixSIAR/")                   # Keep folder path
 ```
 
 The MixSIAR package is designed to create and run Bayesian mixing models
@@ -1069,27 +1117,65 @@ selection (in `tracers` argument):
 
 ``` r
 # Actual sediment samples
-fingR::data.for.MixSIAR(data = database,
-                        class = "Class_decontamination",
-                        target = "Target",
-                        tracers = tracers$mean.sd_KS,
-                        sample.name = "Sample_name",
-                        save.dir = dir.mod.MixSIAR,
-                        # note = "exemple",
-                        # fileEncoding = "latin1",
-                        # show.data = FALSE,
-                        )
+MixSIAR.dt <- fingR::data.for.MixSIAR(data = database,                 # Data.frame with source and mixture information
+                                      class = "Class_decontamination", # Column with classification or grouping or sources and mixtures
+                                      target = "Target",               # Labeling of mixtures in `class`
+                                      tracers = tracers$mean.sd_KS,    # Vector of tracers
+                                      sample.id = "Sample_name",       # Column name for individual sample
+                                      save.dir = dir.mod.MixSIAR,      # Optional - Directory path to save results
+                                      # note = "exemple",              # Optional - Additional file name annotation
+                                      # fileEncoding = "latin1",       # Optional - Encoding format used to save data
+                                      show.data = TRUE,                # Optional - To show created data.frame
+                                      )
+```
 
+``` r
+MixSIAR.dt$sources
+#>                  MeanTOC_PrC SDTOC_PrC MeanTN_PrC SDTN_PrC MeanEDXRF_Al_mg.kg.1
+#> Forest                 10.92      4.25       0.70     0.25             67477.06
+#> Subsoil                 1.41      1.10       0.12     0.10            107782.19
+#> Undecontaminated        5.16      2.05       0.42     0.11             84858.53
+#>                  SDEDXRF_Al_mg.kg.1  n
+#> Forest                     12201.85 24
+#> Subsoil                     9672.67 10
+#> Undecontaminated            9276.76 24
+```
+
+``` r
+MixSIAR.dt$mix[1:5,]
+#>         Sample_name TOC_PrC TN_PrC EDXRF_Al_mg.kg.1
+#> 1 ManoDd_2106_00-01    3.17   0.28         83869.76
+#> 2 ManoDd_2106_01-02    2.81   0.24         80412.18
+#> 3 ManoDd_2106_02-03    3.04   0.25         83741.07
+#> 4 ManoDd_2106_03-04    3.23   0.27         84663.05
+#> 5 ManoDd_2106_04-05    2.88   0.27         81518.68
+```
+
+``` r
+MixSIAR.dt$discimination
+#>                  MeanTOC_PrC SDTOC_PrC MeanTN_PrC SDTN_PrC MeanEDXRF_Al_mg.kg.1
+#> Forest                     0         0          0        0                    0
+#> Subsoil                    0         0          0        0                    0
+#> Undecontaminated           0         0          0        0                    0
+#>                  SDEDXRF_Al_mg.kg.1
+#> Forest                            0
+#> Subsoil                           0
+#> Undecontaminated                  0
+```
+
+The same function is run for the virtual mixtures.
+
+``` r
 # Virtual Mixtures
-fingR::data.for.MixSIAR(data = VM$full,
-                        class = "Class_decontamination",
-                        target = "Virtual Mixture",
-                        tracers = tracers$mean.sd_KS,
-                        sample.name = "Sample_name",
-                        save.dir = dir.mod.MixSIAR,
-                        note = "VM",
-                        # fileEncoding = "latin1",
-                        # show.data = FALSE,
+fingR::data.for.MixSIAR(data = VM$full,                  # Data.frame with source and virtual mixture information
+                        class = "Class_decontamination", # Column with classification or grouping or sources and mixtures
+                        target = "Virtual Mixture",      # Labeling of mixtures in `class`
+                        tracers = tracers$mean.sd_KS,    # Vector of tracers
+                        sample.id = "Sample_name",       # Column name for individual sample
+                        save.dir = dir.mod.MixSIAR,      # Optional - Directory path to save results
+                        note = "VM",                     # Optional - Additional file name annotation
+                        # fileEncoding = "latin1",       # Optional - Encoding format used to save data
+                        show.data = FALSE,                # Optional - To show created data.frame
                         )
 ```
 
@@ -1103,22 +1189,25 @@ actual mixtures: ’MixSIAR_mix.csv’ (actual mixtures),
 
 ``` r
 # Load sediment samples data
-MixSIAR.mix <- MixSIAR::load_mix_data(filename = paste0(dir.mod.MixSIAR, "MixSIAR_mix.csv"),
-                                      iso_names = tracers$mean.sd_KS,
-                                      factors = c("Sample_name"),
-                                      fac_random = FALSE,
-                                      cont_effects = NULL)
+MixSIAR.mix <- MixSIAR::load_mix_data(filename = paste0(dir.mod.MixSIAR, "MixSIAR_mix.csv"),                # CSV file with mixture data
+                                      iso_names = tracers$mean.sd_KS,                                       # Vector of tracers
+                                      factors = c("Sample_name"),                                           # Column name for individual sample
+                                      fac_random = FALSE,                                                   # Indicates if `factors` are a random effect
+                                      cont_effects = NULL                                                   # Specify the column with continuous effect (here none)
+                                      )
 
 # Load source data
-MixSIAR.source <- MixSIAR::load_source_data(filename = paste0(dir.mod.MixSIAR, "MixSIAR_sources.csv"),
-                                            source_factors = NULL,
-                                            conc_dep = FALSE,
-                                            data_type = "means",
-                                            mix = MixSIAR.mix)
+MixSIAR.source <- MixSIAR::load_source_data(filename = paste0(dir.mod.MixSIAR, "MixSIAR_sources.csv"),      # CSV file with source data
+                                            source_factors = NULL,                                          # No source factors specified
+                                            conc_dep = FALSE,                                               # Consideration of concentration
+                                            data_type = "means",                                            # Type of source group values (here means)
+                                            mix = MixSIAR.mix                                               # `load_mix_data` generated object
+                                            )
 
 # Load discrimination data
-MixSIAR.discr <- MixSIAR::load_discr_data(filename = paste0(dir.mod.MixSIAR, "MixSIAR_discrimination.csv"),
-                                          mix = MixSIAR.mix)
+MixSIAR.discr <- MixSIAR::load_discr_data(filename = paste0(dir.mod.MixSIAR, "MixSIAR_discrimination.csv"), # CSv file with discrimination data
+                                          mix = MixSIAR.mix                                                 # `load_mix_data` generated object
+                                          )
 ```
 
 The same functions are used to load the virtual mixtures information.
@@ -1128,23 +1217,26 @@ for the actual mixtures.
 
 ``` r
 # Load virtual mixtures data
-MixSIAR.VM <- MixSIAR::load_mix_data(filename = paste0(dir.mod.MixSIAR, "MixSIAR_mix_VM.csv"),
-                                     iso_names = tracers$mean.sd_KS,
-                                     factors = c("Sample_name"),
-                                     fac_random = FALSE,
-                                     cont_effects = NULL)
+MixSIAR.VM <- MixSIAR::load_mix_data(filename = paste0(dir.mod.MixSIAR, "MixSIAR_mix_VM.csv"),                    # CSV file with mixture data
+                                     iso_names = tracers$mean.sd_KS,                                              # Vector of tracers
+                                     factors = c("Sample_name"),                                                  # Column name for individual sample
+                                     fac_random = FALSE,                                                          # Indicates if `factors` are a random effect
+                                     cont_effects = NULL                                                          # Specify the column with continuous effect (here none)
+                                     )
 
 
 # Load source data
-MixSIAR.source.VM <- MixSIAR::load_source_data(filename = paste0(dir.mod.MixSIAR, "MixSIAR_sources_VM.csv"),
-                                               source_factors = NULL,
-                                               conc_dep = FALSE,
-                                               data_type = "means",
-                                               mix = MixSIAR.VM)
+MixSIAR.source.VM <- MixSIAR::load_source_data(filename = paste0(dir.mod.MixSIAR, "MixSIAR_sources_VM.csv"),      # CSV file with source data
+                                               source_factors = NULL,                                             # No source factors specified
+                                               conc_dep = FALSE,                                                  # Consideration of concentration
+                                               data_type = "means",                                               # Type of source group values (here means)
+                                               mix = MixSIAR.VM                                                   # `load_mix_data` generated object
+                                               )
 
 # Load discrimination data
-MixSIAR.discr.VM <- MixSIAR::load_discr_data(filename = paste0(dir.mod.MixSIAR, "MixSIAR_discrimination_VM.csv"),
-                                             mix = MixSIAR.mix)
+MixSIAR.discr.VM <- MixSIAR::load_discr_data(filename = paste0(dir.mod.MixSIAR, "MixSIAR_discrimination_VM.csv"), # CSv file with discrimination data
+                                             mix = MixSIAR.mix                                                    # `load_mix_data` generated object
+                                             )
 ```
 
 ### 3.2.2.c - Write JAGS model file
@@ -1159,11 +1251,11 @@ specified txt file name (e.g. ’MixSIAR_model.txt’).
 
 ``` r
 # Write JAGS model file for actual samples
-MixSIAR::write_JAGS_model(filename = paste0(dir.mod.MixSIAR, "MixSIAR_model.txt"),
-                          resid_err = FALSE,
-                          process_err = TRUE,
-                          mix = MixSIAR.mix,
-                          source = MixSIAR.source)
+MixSIAR::write_JAGS_model(filename = paste0(dir.mod.MixSIAR, "MixSIAR_model.txt"), # JAGS model file path and name
+                          resid_err = FALSE,                                       # Whether to include residual error
+                          process_err = TRUE,                                      # Whether to include process error
+                          mix = MixSIAR.mix,                                       # Mixtures loaded dataset (from MixSIAR::load_mix_data)
+                          source = MixSIAR.source)                                 # Sources loaded dataset (from MixSIAR::load_source_data)
 ```
 
 Another JAGS model is written for virtual mixtures since the the mixture
@@ -1171,11 +1263,11 @@ samples and sources are set in `mix` and `source`.
 
 ``` r
 # Write JAGS model file for virtual mixtures
-MixSIAR::write_JAGS_model(filename = paste0(dir.mod.MixSIAR, "MixSIAR_model_VM.txt"),
-                          resid_err = FALSE,
-                          process_err = TRUE,
-                          mix = MixSIAR.VM,
-                          source = MixSIAR.source.VM)
+MixSIAR::write_JAGS_model(filename = paste0(dir.mod.MixSIAR, "MixSIAR_model_VM.txt"), # JAGS model file path and name
+                          resid_err = FALSE,                                          # Whether to include residual error
+                          process_err = TRUE,                                         # Whether to include process error
+                          mix = MixSIAR.VM,                                           # Mixtures loaded dataset (from MixSIAR::load_mix_data)
+                          source = MixSIAR.source.VM)                                 # Sources loaded dataset (from MixSIAR::load_source_data)
 ```
 
 ### 3.2.2.d - Run MixSIAR
@@ -1201,16 +1293,17 @@ option](https://brianstock.github.io/MixSIAR/articles/wolves_ex.html#run-model)
 In this example MCMC is set to “test”, which allows to quickly ensures
 that the code implemented is functional.
 
-> if “Error: .onload … ‘rgags’ -\> it’s because R version is too old
-> need at least R.2.2
+> [!WARNING]
+> If “Error: .onload … ‘rgags’ -\> could occurs when the R version
+> is too old. You need at least R.2.2.
 
 ``` r
 # Run MixSIAR model for sediment samples
-jags.mix <- MixSIAR::run_model(run = "test",
-                               mix = MixSIAR.mix,
-                               source = MixSIAR.source,
-                               discr = MixSIAR.discr,
-                               model_filename = paste0(dir.mod.MixSIAR, "MixSIAR_model.txt")
+jags.mix <- MixSIAR::run_model(run = "test",                                                 # Type of run
+                               mix = MixSIAR.mix,                                            # Mixtures loaded dataset (from MixSIAR::load_mix_data)
+                               source = MixSIAR.source,                                      # Sources loaded dataset (from MixSIAR::load_source_data)
+                               discr = MixSIAR.discr,                                        # Discrimination loaded dataset (from MixSIAR::load_discr_data)
+                               model_filename = paste0(dir.mod.MixSIAR, "MixSIAR_model.txt") # JAGS model file path and name (generated with MixSIAR::write_JAGS_model)
                                )
 #> Compiling model graph
 #>    Resolving undeclared variables
@@ -1225,11 +1318,11 @@ jags.mix <- MixSIAR::run_model(run = "test",
 
 ``` r
 # Run MixSIAR model for sediment samples
-jags.VM <- MixSIAR::run_model(run = "test",
-                              mix = MixSIAR.VM,
-                              source = MixSIAR.source.VM,
-                              discr = MixSIAR.discr.VM,
-                              model_filename = paste0(dir.mod.MixSIAR, "MixSIAR_model_VM.txt")
+jags.VM <- MixSIAR::run_model(run = "test",                                                    # Type of run
+                              mix = MixSIAR.VM,                                                # Mixtures loaded dataset (from MixSIAR::load_mix_data)
+                              source = MixSIAR.source.VM,                                      # Sources loaded dataset (from MixSIAR::load_source_data)
+                              discr = MixSIAR.discr.VM,                                        # Discrimination loaded dataset (from MixSIAR::load_discr_data)
+                              model_filename = paste0(dir.mod.MixSIAR, "MixSIAR_model_VM.txt") # JAGS model file path and name (generated with MixSIAR::write_JAGS_model)
                               )
 #> Compiling model graph
 #>    Resolving undeclared variables
@@ -1264,43 +1357,45 @@ from all sources sum to 1 or 100 % (saves
 
 ``` r
 ## Summarise MixSIAR model previsions
-MixSIAR.summary.mix <- fingR::JAGS.summary(jags.1 = jags.mix,
-                                           mix = MixSIAR.mix,
-                                           sources = MixSIAR.source,
-                                           path = dir.mod.MixSIAR,
-                                           #note = "example",
-                                           save_pred = TRUE
+MixSIAR.summary.mix <- fingR::JAGS.summary(jags.1 = jags.mix,          # Results from MixSIAR::run_model
+                                           mix = MixSIAR.mix,          # Mixtures loaded dataset (from MixSIAR::load_mix_data)
+                                           sources = MixSIAR.source,   # Sources loaded dataset (from MixSIAR::load_source_data)
+                                           save.dir = dir.mod.MixSIAR, # Optional - Directory path to save results
+                                           save.pred = TRUE            # To also save Monte Carlo predictions
                                            )
+#> [1] " MixSIAR Monte-Carlo chain predictions saved."
 
 ## Extracts the median value of the previsions
-MixSIAR.preds.mix <- fingR::JAGS.pred(path = paste0(dir.mod.MixSIAR, "JAGS_contrib.csv"),
-                                      stats = "Median",
-                                      save = TRUE,
-                                      #note = "example"
+MixSIAR.preds.mix <- fingR::JAGS.pred(path = paste0(dir.mod.MixSIAR, "JAGS_contrib.csv"), # Directory path to `fingR::JAGS.summary` saved file
+                                      stats = "Median",                # Summary statistics (`Median` or `Mean`)
+                                      save = TRUE,                     # To save results
+                                      # note = "example"               # Optional - Additional file name annotation
                                       )
 
 ## Ensure that the total predicted contribution sums to 1 or 100%
-MixSIAR.preds.mixE <- fingR::ensure.total(data = MixSIAR.preds.mix,
-                                          sample.name = "sample",
-                                          path = dir.mod.MixSIAR,
-                                          #note = "example"
+MixSIAR.preds.mixE <- fingR::ensure.total(data = MixSIAR.preds.mix,    # data.frame with Bayensian model predictions (usually from `fingR::JAGS.pred`)
+                                          sample.id = "sample",        # Identifier for individual samples
+                                          save.dir = dir.mod.MixSIAR,  # Optional - Directory path to save results
+                                          # note = "example            # Optional - Additional file name annotation
                                           )
 ```
 
 ``` r
 MixSIAR.preds.mixE[1:5,]
 #>              sample Median_Forest Median_Subsoil Median_Undecontaminated total
-#> 1 ManoDd_2106_00-01         0.179          0.020                   0.801 1.000
-#> 2 ManoDd_2106_01-02         0.058          0.013                   0.929 0.999
-#> 3 ManoDd_2106_02-03         0.059          0.017                   0.924 1.000
-#> 4 ManoDd_2106_03-04         0.067          0.021                   0.912 0.999
-#> 5 ManoDd_2106_04-05         0.065          0.016                   0.919 0.999
+#> 1 ManoDd_2106_00-01         0.171          0.022                   0.807 0.999
+#> 2 ManoDd_2106_01-02         0.057          0.021                   0.922 0.999
+#> 3 ManoDd_2106_02-03         0.063          0.024                   0.913 0.999
+#> 4 ManoDd_2106_03-04         0.064          0.022                   0.914 1.000
+#> 5 ManoDd_2106_04-05         0.063          0.023                   0.914 1.000
 ```
 
 The same sequence of functions is used for the virtual mixture
 predictions, resulting in `MixSIAR.summary.VM` from `JAGS.summary`,
 `MixSIAR.preds.VM` from `JAGS.pred`, and `MixSIAR.pred.VME` from
 `ensure.total`.
+
+------------------------------------------------------------------------
 
 ### 3.3 - Modelling accuracy statistics calculation
 
@@ -1367,21 +1462,21 @@ specified in `by` (The resulting data frame is saved as
 ’ObsPred\[\_note\].csv’).
 
 ``` r
-BMM.stats <- fingR::eval.groups(df.obs = VM.contrib, # Theoretical contribution
-                                df.pred = BMM.pred.VME %>%
-                                  dplyr::select(-total), # remove the $total column from ensured data.frame
-                                by = c("Sample_name" = "mix.names"),
-                                path = dir.mod.BMM,
-                                #note = "example" 
+BMM.stats <- fingR::eval.groups(df.obs = VM.contrib,                 # data.frame of theoretical contribution
+                                df.pred = BMM.pred.VME %>%           # data.frame of predicted contribution
+                                  dplyr::select(-total),             ## remove the $total column from ensured data.frame
+                                by = c("Sample_name" = "mix.names"), # Variable to join df.obs and df.pred
+                                save.dir = dir.mod.BMM,              # Optional - Directory path to save results
+                                #note = "example"                    # Optional - Additional file name annotation
                                 )
 ```
 
 ``` r
 BMM.stats
 #>     Type           Source    ME RMSE   r2   NSE
-#> 1 Median           Forest -0.16 0.24 0.57  0.11
-#> 2 Median          Subsoil  0.40 0.47 0.37 -2.52
-#> 3 Median Undecontaminated -0.24 0.38 0.00 -1.25
+#> 1 Median           Forest -0.16 0.24 0.53  0.08
+#> 2 Median          Subsoil  0.41 0.48 0.37 -2.63
+#> 3 Median Undecontaminated -0.25 0.39 0.01 -1.44
 ```
 
 ### 3.3.2 - Continuous ranked probability score
@@ -1407,13 +1502,12 @@ the direction indicated by `path.to.prev`:
 
 ``` r
 # Calculate prediction CRPS values
-BMM.CRPS <- fingR::CRPS(obs = VM.contrib,
-                        prev = read.csv(paste0(dir.mod.BMM, "BMM_prevision_VM.csv")),
-                        source.groups = c("Forest", "Subsoil", "Undecontaminated"),
-                        mean.cal = TRUE,
-                        # save = TRUE,
-                        save.dir = dir.mod.BMM,
-                        #note = "example"
+BMM.CRPS <- fingR::CRPS(obs = VM.contrib,                                             # data.frame of theoretical contribution
+                        prev = read.csv(paste0(dir.mod.BMM, "BMM_prevision_VM.csv")), # data.frame of Monte-Carlo simulation prevision (usually from fingR::JAGS.summary)
+                        source.groups = c("Forest", "Subsoil", "Undecontaminated"),   # vector of source group labels
+                        mean.cal = TRUE,                                              # Calculate the group mean CRPS (default FALSE)
+                        save.dir = dir.mod.BMM,                                       # Optional - Directory path to save results
+                        # note = "example"                                            # Optional - Additional file name annotation
                         )
 #> Lade nötiges Paket: scoringRules
 ```
@@ -1421,19 +1515,19 @@ BMM.CRPS <- fingR::CRPS(obs = VM.contrib,
 ``` r
 BMM.CRPS$samples[1:5,]
 #>   Sample_name Forest Subsoil Undecontaminated
-#> 1      VM-001 0.0641  0.2921           0.5433
-#> 2      VM-002 0.0543  0.3606           0.5966
-#> 3      VM-003 0.0263  0.3004           0.4377
-#> 4      VM-004 0.0377  0.4220           0.6046
-#> 5      VM-005 0.0517  0.2912           0.4933
+#> 1      VM-001 0.0841  0.2615           0.5343
+#> 2      VM-002 0.0710  0.3822           0.6758
+#> 3      VM-003 0.0225  0.3324           0.4596
+#> 4      VM-004 0.0774  0.2062           0.4256
+#> 5      VM-005 0.0360  0.2387           0.3727
 ```
 
 ``` r
 BMM.CRPS$mean
 #>             Source CRPS.mean
-#> 1           Forest    0.1377
-#> 2          Subsoil    0.1672
-#> 3 Undecontaminated    0.1889
+#> 1           Forest    0.1375
+#> 2          Subsoil    0.1645
+#> 3 Undecontaminated    0.1886
 ```
 
 ### 3.3.3 - Prediction interval width
@@ -1460,22 +1554,23 @@ the direction indicated by `path.to.prev`:
 
 ``` r
 # Calculate prediction interval width (W95, W50)
-BMM.predWidth <- fingR::interval.width(path.to.prev = paste0(dir.mod.BMM, "BMM_prevision_VM.csv"),
-                                       mean.cal = TRUE,
-                                       save = TRUE,
-                                       #note = "exemple"
+BMM.predWidth <- fingR::interval.width(path.to.prev = paste0(dir.mod.BMM, "BMM_prevision_VM.csv"), # Directory to Monte-Carlo simulation prevision CSV file (usually from fingR::JAGS.summary)
+                                       mean.cal = TRUE,                                            # Calculate the group mean interval width (default FALSE)
+                                       save = FALSE,                                               # To save results at the same location as path.to.prev (default FALSE)
+                                       save.dir = dir.mod.BMM,                                     # Optional - Directory path to save results
+                                       # note = "exemple"                                          # Optional - Additional file name annotation
                                        )
 ```
 
 ``` r
 BMM.predWidth$samples[1:6,]
 #>   mix.names           source   W50   W95
-#> 1    VM-001           Forest 0.282 0.997
-#> 2    VM-001          Subsoil 0.573 0.997
-#> 3    VM-001 Undecontaminated 0.493 0.854
-#> 4    VM-002           Forest 0.339 0.826
-#> 5    VM-002          Subsoil 0.664 0.997
-#> 6    VM-002 Undecontaminated 0.249 0.988
+#> 1    VM-001           Forest 0.329 0.997
+#> 2    VM-001          Subsoil 0.820 0.997
+#> 3    VM-001 Undecontaminated 0.464 0.997
+#> 4    VM-002           Forest 0.319 0.997
+#> 5    VM-002          Subsoil 0.623 0.997
+#> 6    VM-002 Undecontaminated 0.224 0.997
 ```
 
 ``` r
@@ -1483,9 +1578,9 @@ BMM.predWidth$mean
 #> # A tibble: 3 × 3
 #>   Source           W50.mean W95.mean
 #>   <chr>               <dbl>    <dbl>
-#> 1 Forest              0.35     0.885
-#> 2 Subsoil             0.584    0.966
-#> 3 Undecontaminated    0.397    0.93
+#> 1 Forest              0.361    0.893
+#> 2 Subsoil             0.589    0.963
+#> 3 Undecontaminated    0.407    0.931
 ```
 
 ### 3.3.4 - Encompassed sample predictions
@@ -1507,35 +1602,40 @@ sediment samples.
 sources.lvl <- c("Forest", "Subsoil", "Undecontaminated")
 
 # Calculate encompassed sample predictions (ESP)
-BMM.ESP <- fingR::ESP(obs = BMM.preds.VM,                           # Virtual mixtures predicted contributions
-                          pred = BMM.preds.mixE,                    # Actual sediment samples predicted contributions
-                          sources = paste0("Median_", sources.lvl), # Sources labels in prediction objects
-                          count = "Both"                            # Count 'Number' and 'Percentage'
-                          )
+BMM.ESP <- fingR::ESP(obs = BMM.preds.VM,                       # data.frame with virtual mixtures predicted contributions
+                      pred = BMM.preds.mixE,                    # Actual sediment samples predicted contributions
+                      sources = paste0("Median_", sources.lvl), # Sources labels in prediction objects
+                      # sources.obs = "",                       # Optional - character indicating sample id in obs data.frame
+                      # sources.pred = "",                      # Optional - character indicating sample id in pred data.frame
+                      count = "Both"                            # Count 'Number' and 'Percentage'
+                      )
 ```
 
 ``` r
 BMM.ESP
 #>                                   Source ESP.Number ESP.Percentage
-#> Median_Forest                     Forest         34             89
+#> Median_Forest                     Forest         36             95
 #> Median_Subsoil                   Subsoil         38            100
-#> Median_Undecontaminated Undecontaminated         19             50
+#> Median_Undecontaminated Undecontaminated         17             45
 ```
 
 # Future updates
 
-The upcoming version 2.3.0 update will introduce the Python version of
-fingR, making the sediment source fingerprinting tools available to a
-broader community.
+The upcoming version will introduce the Python version of fingR, making
+the sediment source fingerprinting tools available to a broader
+community.
 
 *Graphical support functions such as Bayesian prediction density plots,
 prediction vs. observation plots, and ternary diagrams are under
 development.*
 
-# Getting help
+# Getting help & contributing
 
-If you encounter a clear bug, please open an issue or send an email to
-[Thomas Chalaux-Clergue](mailto:thomaschalaux@icloud.com).
+If you encounter a clear bug, have a question or suggestion, please
+either open an [Issues](https://github.com/tchalauxclergue/fingR/issues)
+or send an email to [Thomas Chalaux-Clergue (thomaschalaux@icloud.com)
+and Amaury Bardelle
+(amaury.bardelle@icloud.com)](mailto:thomaschalaux@icloud.com,%20amaury.bardelle@icloud.com).
 
 # Citation
 
@@ -1557,7 +1657,7 @@ utils::citation(package = "fingR")
 #>     author = {{Chalaux-Clergue} and {Thomas} and {Bizeul} and {Rémi} and {Amaury} and {Bardelle}},
 #>     year = {2025},
 #>     month = {7},
-#>     note = {R package version 2.1.3},
+#>     note = {R package version 2.2.0},
 #>     doi = {https://doi.org/10.5281/zenodo.8293595},
 #>     url = {https://github.com/tchalauxclergue/fingR},
 #>   }
