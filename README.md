@@ -103,10 +103,10 @@ archived on [Zenodo](https://zenodo.org/records/10796375).
 library(devtools)
 
 # Install the most recent version from GitHub - check github page for updates
-devtools::install_github("https://github.com/tchalauxclergue/fingR/releases/tag/2.2.0", ref = "master", force = T)
+devtools::install_github("https://github.com/tchalauxclergue/fingR/releases/tag/2.1.4", ref = "master", force = T)
 
 # Alternatively, install from a downloaded '.tar.gz' file
-devtools::install_local("path_to_file/fingR_2.2.0.tar.gz", repos = NULL)
+devtools::install_local("path_to_file/fingR_2.1.4.tar.gz", repos = NULL)
 # 'path_to_file' should be modified accordingly to your working environment
 ```
 
@@ -1648,7 +1648,7 @@ utils::citation(package = "fingR")
 #>   Chalaux-Clergue et al. (2025). fingR: A package to support sediment
 #>   source fingerprinting studies, Zenodo [Package]:
 #>   https://doi.org/10.5281/zenodo.8293595, Github [Package]:
-#>   https://github.com/tchalauxclergue/fingR, Version = 2.1.3.
+#>   https://github.com/tchalauxclergue/fingR, Version = 2.1.4.
 #> 
 #> A BibTeX entry for LaTeX users is
 #> 
@@ -1657,7 +1657,7 @@ utils::citation(package = "fingR")
 #>     author = {{Chalaux-Clergue} and {Thomas} and {Bizeul} and {Rémi} and {Amaury} and {Bardelle}},
 #>     year = {2025},
 #>     month = {7},
-#>     note = {R package version 2.2.0},
+#>     note = {R package version 2.1.4},
 #>     doi = {https://doi.org/10.5281/zenodo.8293595},
 #>     url = {https://github.com/tchalauxclergue/fingR},
 #>   }
