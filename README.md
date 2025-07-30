@@ -9,11 +9,11 @@
 version](https://img.shields.io/github/r-package/v/tchalauxclergue/fingR?logo=github)
 ![GitHub Release
 Date](https://img.shields.io/github/release-date/tchalauxclergue/fingR?color=blue)
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1402028.svg)](https://doi.org/10.5281/zenodo.10044404)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1402028.svg)](https://doi.org/10.5281/zenodo.8293595)
 [![GitHub
 Downloads](https://img.shields.io/github/downloads/tchalauxclergue/fingR/total?label=GitHub%20downloads&style=flat)](https://github.com/tchalauxclergue/fingR/releases)
 [![Zenodo
-Downloads](https://img.shields.io/badge/Zenodo%20downloads-107-blue)](https://zenodo.org/records/15412071)
+Downloads](https://img.shields.io/badge/Zenodo%20downloads-107-blue)](https://zenodo.org/records/16320027)
 ![Project Status: Active – The project has reached a stable, usable
 state and is being actively
 developed.](http://www.repostatus.org/badges/latest/active.svg)
