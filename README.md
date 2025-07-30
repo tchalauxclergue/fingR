@@ -1098,7 +1098,7 @@ library(MixSIAR)
 
 ### 3.2.2.a - Generate data for MixSIAR
 
-To MixSIAR model requires data to be formated in a specific format to
+MixSIAR model requires data to be formated in a specific format to
 load the information of source and mixture samples. The
 `data.for.MixSIAR` function generates CSV files that conform to the
 format required by MixSIAR loading functions (i.e. `load_mix_data` ,
