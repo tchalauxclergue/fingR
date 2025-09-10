@@ -13,7 +13,7 @@ Date](https://img.shields.io/github/release-date/tchalauxclergue/fingR?color=blu
 [![GitHub
 Downloads](https://img.shields.io/github/downloads/tchalauxclergue/fingR/total?label=GitHub%20downloads&style=flat)](https://github.com/tchalauxclergue/fingR/releases)
 [![Zenodo
-Downloads](https://img.shields.io/badge/Zenodo%20downloads-112-blue)](https://zenodo.org/records/15412071)
+Downloads](https://img.shields.io/badge/Zenodo%20downloads-114-blue)](https://zenodo.org/records/17035150)
 ![Project Status: Active – The project has reached a stable, usable
 state and is being actively
 developed.](http://www.repostatus.org/badges/latest/active.svg)
@@ -31,7 +31,7 @@ virtual mixtures, and it supports BMM and
 
 The `fingR` package is available in this
 [Github](https://github.com/tchalauxclergue/fingR) repository and
-archived on [Zenodo](https://zenodo.org/records/10796375).
+archived on [Zenodo](https://zenodo.org/records/17035150).
 
 <details>
 
@@ -1739,4 +1739,5 @@ utils::citation(package = "fingR")
 - Stock, B. C., Semmens, B. X., Ward, E. J., Parnell, A. C., &
   Phillips, D. L. (2022). JAGS: Bayesian Mixing Models in R (Version
   4.3.1) \[Computer software\]. <https://doi.org/10.5281/zenodo.1209993>
+
 
