@@ -2,12 +2,14 @@ Type: Package
 Package: fingR
 Title: A support to sediment source fingerprinting studies 
 Version: 2.1.4
+Packaged: 2025-07-23
+Date: 2025
 Authors:
   person("Thomas", "Chalaux-Clergue", role = c("cre","aut","cph"), email = "thomaschalaux@icloud.com", comment = c(ORCID = "0000-0003-3525-832X")),
   person("Rémi", "Bizeul", role = c("ctb"), email = "rbizeul59@gmail.com", comment = c("Provided feedback", ORCID = "0000-0002-4103-9839")),
   person("Amaury", "Bardelle", role = c("ctb"), email = "amaury.bardelle@icloud.com", comment = c(ORCID = '0009-0000-8953-8402'))
 Maintainer:
-  The package maintainer <thomaschalaux@icloud.com>
+  Thomas Chalaux-Clergue <thomaschalaux@icloud.com>
 Description:
   A package to support sediment source fingerprinting studies:
   fingR is a comprehensive package designed to support Sediment Source
@@ -16,8 +18,12 @@ Description:
   Three-step method, model source contributions modelling with the Bayesian
   Mixing Model (BMM), and assessment of modelling predictions prediction
   though the use of virtual mixtures, supporting BMM and MixSIAR models.
-Depends:
-  R (>= 4.5.1)
+Zenodo: https://doi.org/10.5281/zenodo.10044404
+URL : https://github.com/tchalauxclergue/fingR
+BugReports : https://github.com/tchalauxclergue/fingR/issues
+Depends: R (>= 4.5.1)
+License: CeCILL 2.1
+Encoding: UTF-8
 Imports:
   doParallel (>= 1.0.17),
   dplyr (>= 1.1.4),
@@ -38,17 +44,15 @@ Suggests:
   ggthemes (>= 5.1.0),
   MixSIAR (>= 3.1.12),
   scales (>= 1.4.0)
-Zenodo: https://doi.org/10.5281/zenodo.10044404
-URL : https://github.com/tchalauxclergue/fingR
-BugReports : https://github.com/tchalauxclergue/fingR/issues
-License: CeCILL 2.1
-Encoding: UTF-8
 LazyData: true
+VignetteBuilder: knitr
 RoxygenNote: 7.3.2
 Config/testthat/edition: 3
-Packaged: 2025-07-23
-Date: 2025
 Author:
   Thomas Chalaux-Clergue [cre, aut, cph] ("0000-0003-3525-832X"),
   Rémi Bizeul [ctb] ("0000-0002-4103-9839"),
   Amaury Bardelle [ctb] ("0000-0002-4103-9839")
+Autors@R:c(
+  person("Thomas", "Chalaux-Clergue", role = c("cre","aut","cph"), email = "thomaschalaux@icloud.com", comment = c(ORCID = "0000-0003-3525-832X")),
+  person("Rémi", "Bizeul", role = c("ctb"), email = "rbizeul59@gmail.com", comment = c("Provided feedback", ORCID = "0000-0002-4103-9839")),
+  person("Amaury", "Bardelle", role = c("ctb"), email = "amaury.bardelle@icloud.com", comment = c(ORCID = '0009-0000-8953-8402')))
