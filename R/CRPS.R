@@ -12,8 +12,7 @@
 #' @param mean.cal a boolean. Set TRUE to calculate the CRPS mean value per sample.
 #' @param save.dir connection open for writing the test results data.frame. If "" save the file at working directory, if not set (default) the data.frame is not saved.
 #' @param note a character string to add a note at the end of the file name (not set - default).
-#' @param fileEncoding character string, if non-empty declares the encoding to be used on a file (not a connection) so the character data can be re-encoded
-#' as they are written, "latin1" (default).
+#' @param fileEncoding character string, if non-empty declares the encoding to be used on a file (not a connection) so the character data can be re-encoded as they are written, "latin1" (default).
 #'
 #' @author Thomas Chalaux-Clergue
 #'

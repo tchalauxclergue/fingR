@@ -9,11 +9,11 @@
 version](https://img.shields.io/github/r-package/v/tchalauxclergue/fingR?logo=github)
 ![GitHub Release
 Date](https://img.shields.io/github/release-date/tchalauxclergue/fingR?color=blue)
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1402028.svg)](https://doi.org/10.5281/zenodo.10044404)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1402028.svg)](https://doi.org/10.5281/zenodo.8293595)
 [![GitHub
 Downloads](https://img.shields.io/github/downloads/tchalauxclergue/fingR/total?label=GitHub%20downloads&style=flat)](https://github.com/tchalauxclergue/fingR/releases)
 [![Zenodo
-Downloads](https://img.shields.io/badge/Zenodo%20downloads-136-blue)](https://zenodo.org/records/17035150)
+Downloads](https://img.shields.io/badge/Zenodo%20downloads-191-blue)](https://zenodo.org/records/15412071)
 ![Project Status: Active – The project has reached a stable, usable
 state and is being actively
 developed.](http://www.repostatus.org/badges/latest/active.svg)
@@ -31,7 +31,7 @@ virtual mixtures, and it supports BMM and
 
 The `fingR` package is available in this
 [Github](https://github.com/tchalauxclergue/fingR) repository and
-archived on [Zenodo](https://zenodo.org/records/17035150).
+archived on [Zenodo](https://zenodo.org/records/10796375).
 
 <details>
 
@@ -103,10 +103,10 @@ archived on [Zenodo](https://zenodo.org/records/17035150).
 library(devtools)
 
 # Install the most recent version from GitHub - check github page for updates
-devtools::install_github("https://github.com/tchalauxclergue/fingR/releases/tag/2.1.4", ref = "master", force = T)
+devtools::install_github("https://github.com/tchalauxclergue/fingR/releases/tag/2.2.0", ref = "master", force = T)
 
 # Alternatively, install from a downloaded '.tar.gz' file
-devtools::install_local("path_to_file/fingR_2.1.4.tar.gz", repos = NULL)
+devtools::install_local("path_to_file/fingR_2.2.0.tar.gz", repos = NULL)
 # 'path_to_file' should be modified accordingly to your working environment
 ```
 
@@ -454,9 +454,8 @@ to the `save.dir` argument:
   two-samples KS tests for each property. Set `return.tests = TRUE` to
   return this table as `$result.KS` (default is `FALSE`).
 
-> [!WARNING]
-> When using the KW test, the KS test results can also help verify
-> the KW assumption of similar distribution shape across groups.
+> \[!WARNING\] When using the KW test, the KS test results can also help
+> verify the KW assumption of similar distribution shape across groups.
 
 - ’Discriminant_tests\[\_note\].csv’ summarises the results from KS or
   KW tests.
@@ -857,14 +856,12 @@ The function returns a data frame containing the individual iteration
 source contributions for each mixture and, if `save.dir` is set, saves
 it as ’BMM_prevision\[\_note\].csv
 
-> [!TIP]
-> Setting `n.iter` to 30 allows the structure to be tested before
-> the actual modelling is carried out.
+> \[!TIP\] Setting `n.iter` to 30 allows the structure to be tested
+> before the actual modelling is carried out.
 
-> [!NOTE]
-> It is not compulsory to provide the actual measurement  uncertainty
-> of tracers to `uncertainty` argument, although, it is highly
-> recommended.
+> \[!NOTE\] It is not compulsory to provide the actual measurement
+> uncertainty of tracers to `uncertainty` argument, although, it is
+> highly recommended.
 
 ``` r
 
@@ -891,9 +888,8 @@ isotope.prop and `isotopes.unc`. For example, when using the
 δ<sup>13</sup>C isotopic ratio in organic matter, the run.BMM function
 should be set as follows:
 
-> [!NOTE]
-> `isotope.ratio`, `isotope.prop`, and `isotopes.unc` work for any
-> type of non linear properties.
+> \[!NOTE\] `isotope.ratio`, `isotope.prop`, and `isotopes.unc` work for
+> any type of non linear properties.
 
 ``` r
 
@@ -942,17 +938,17 @@ BMM.summary.mix <- fingR::BMM.summary(pred = BMM.mix,            # Data.frame wi
 ``` r
 BMM.summary.mix[1:5,]
 #>           mix.names           source  Mean    SD  Q2.5    Q5   Q25   Q50   Q75
-#> 1 ManoDd_2106_00-01           Forest 0.105 0.178 0.001 0.001 0.001 0.001 0.109
-#> 2 ManoDd_2106_00-01          Subsoil 0.516 0.319 0.001 0.001 0.360 0.524 0.750
-#> 3 ManoDd_2106_00-01 Undecontaminated 0.379 0.363 0.001 0.001 0.001 0.364 0.639
-#> 4 ManoDd_2106_01-02           Forest 0.068 0.107 0.001 0.001 0.001 0.008 0.082
-#> 5 ManoDd_2106_01-02          Subsoil 0.721 0.286 0.035 0.126 0.590 0.853 0.939
+#> 1 ManoDd_2106_00-01           Forest 0.148 0.226 0.001 0.001 0.001 0.018 0.192
+#> 2 ManoDd_2106_00-01          Subsoil 0.467 0.334 0.001 0.001 0.235 0.473 0.676
+#> 3 ManoDd_2106_00-01 Undecontaminated 0.385 0.356 0.001 0.001 0.001 0.425 0.590
+#> 4 ManoDd_2106_01-02           Forest 0.044 0.110 0.001 0.001 0.001 0.001 0.001
+#> 5 ManoDd_2106_01-02          Subsoil 0.557 0.296 0.001 0.018 0.360 0.544 0.830
 #>     Q95 Q97.5
-#> 1 0.496 0.545
-#> 2 0.998 0.998
-#> 3 0.971 0.991
-#> 4 0.336 0.355
-#> 5 0.992 0.998
+#> 1 0.647 0.670
+#> 2 0.988 0.992
+#> 3 0.955 0.975
+#> 4 0.163 0.274
+#> 5 0.998 0.998
 ```
 
 ``` r
@@ -969,11 +965,11 @@ BMM.preds.mix <- fingR::BMM.pred(data = BMM.summary.mix,         # Data.frame wi
 ``` r
 BMM.preds.mix[1:5,]
 #>           mix.names Median_Forest Median_Subsoil Median_Undecontaminated
-#> 1 ManoDd_2106_00-01         0.001          0.524                   0.364
-#> 2 ManoDd_2106_01-02         0.008          0.853                   0.049
-#> 3 ManoDd_2106_02-03         0.001          0.739                   0.101
-#> 4 ManoDd_2106_03-04         0.001          0.586                   0.210
-#> 5 ManoDd_2106_04-05         0.001          0.582                   0.375
+#> 1 ManoDd_2106_00-01         0.018          0.473                   0.425
+#> 2 ManoDd_2106_01-02         0.001          0.544                   0.377
+#> 3 ManoDd_2106_02-03         0.046          0.661                   0.061
+#> 4 ManoDd_2106_03-04         0.063          0.520                   0.288
+#> 5 ManoDd_2106_04-05         0.026          0.604                   0.370
 ```
 
 ``` r
@@ -988,11 +984,11 @@ BMM.preds.mixE <- fingR::ensure.total(data = BMM.preds.mix,      # Data.frame wi
 ``` r
 BMM.preds.mixE[1:5,]
 #>           mix.names Median_Forest Median_Subsoil Median_Undecontaminated total
-#> 1 ManoDd_2106_00-01         0.001          0.590                   0.409     1
-#> 2 ManoDd_2106_01-02         0.009          0.938                   0.053     1
-#> 3 ManoDd_2106_02-03         0.001          0.879                   0.120     1
-#> 4 ManoDd_2106_03-04         0.001          0.735                   0.264     1
-#> 5 ManoDd_2106_04-05         0.001          0.607                   0.392     1
+#> 1 ManoDd_2106_00-01         0.020          0.516                   0.464     1
+#> 2 ManoDd_2106_01-02         0.001          0.590                   0.409     1
+#> 3 ManoDd_2106_02-03         0.060          0.861                   0.079     1
+#> 4 ManoDd_2106_03-04         0.072          0.597                   0.331     1
+#> 5 ManoDd_2106_04-05         0.026          0.604                   0.370     1
 ```
 
 The same sequence of functions is applied for the virtual mixture
@@ -1043,11 +1039,11 @@ BMM.pred.VME <- fingR::ensure.total(data = BMM.preds.VM,        # Data.frame wit
 ``` r
 BMM.pred.VME[1:5,]
 #>   mix.names Median_Forest Median_Subsoil Median_Undecontaminated total
-#> 1    VM-001         0.175          0.708                   0.117     1
-#> 2    VM-002         0.068          0.931                   0.001     1
-#> 3    VM-003         0.001          0.937                   0.062     1
-#> 4    VM-004         0.078          0.687                   0.235     1
-#> 5    VM-005         0.001          0.961                   0.038     1
+#> 1    VM-001         0.001          0.638                   0.361     1
+#> 2    VM-002         0.033          0.887                   0.080     1
+#> 3    VM-003         0.001          0.998                   0.001     1
+#> 4    VM-004         0.001          0.998                   0.001     1
+#> 5    VM-005         0.036          0.899                   0.065     1
 ```
 
 ------------------------------------------------------------------------
@@ -1098,7 +1094,7 @@ library(MixSIAR)
 
 ### 3.2.2.a - Generate data for MixSIAR
 
-MixSIAR model requires data to be formated in a specific format to
+To MixSIAR model requires data to be formated in a specific format to
 load the information of source and mixture samples. The
 `data.for.MixSIAR` function generates CSV files that conform to the
 format required by MixSIAR loading functions (i.e. `load_mix_data` ,
@@ -1293,9 +1289,8 @@ option](https://brianstock.github.io/MixSIAR/articles/wolves_ex.html#run-model)
 In this example MCMC is set to “test”, which allows to quickly ensures
 that the code implemented is functional.
 
-> [!WARNING]
-> If “Error: .onload … ‘rgags’ -\> could occurs when the R version
-> is too old. You need at least R.2.2.
+> \[!WARNING\] if “Error: .onload … ‘rgags’ -\> could occurs when the R
+> version is too old. You need at least R.2.2.
 
 ``` r
 # Run MixSIAR model for sediment samples
@@ -1383,11 +1378,11 @@ MixSIAR.preds.mixE <- fingR::ensure.total(data = MixSIAR.preds.mix,    # data.fr
 ``` r
 MixSIAR.preds.mixE[1:5,]
 #>              sample Median_Forest Median_Subsoil Median_Undecontaminated total
-#> 1 ManoDd_2106_00-01         0.171          0.022                   0.807 0.999
-#> 2 ManoDd_2106_01-02         0.057          0.021                   0.922 0.999
-#> 3 ManoDd_2106_02-03         0.063          0.024                   0.913 0.999
-#> 4 ManoDd_2106_03-04         0.064          0.022                   0.914 1.000
-#> 5 ManoDd_2106_04-05         0.063          0.023                   0.914 1.000
+#> 1 ManoDd_2106_00-01         0.198          0.035                   0.767 1.000
+#> 2 ManoDd_2106_01-02         0.068          0.036                   0.896 1.000
+#> 3 ManoDd_2106_02-03         0.073          0.058                   0.869 0.999
+#> 4 ManoDd_2106_03-04         0.077          0.054                   0.869 1.000
+#> 5 ManoDd_2106_04-05         0.071          0.043                   0.886 0.998
 ```
 
 The same sequence of functions is used for the virtual mixture
@@ -1474,9 +1469,9 @@ BMM.stats <- fingR::eval.groups(df.obs = VM.contrib,                 # data.fram
 ``` r
 BMM.stats
 #>     Type           Source    ME RMSE   r2   NSE
-#> 1 Median           Forest -0.16 0.24 0.53  0.08
-#> 2 Median          Subsoil  0.41 0.48 0.37 -2.63
-#> 3 Median Undecontaminated -0.25 0.39 0.01 -1.44
+#> 1 Median           Forest -0.18 0.25 0.57  0.03
+#> 2 Median          Subsoil  0.44 0.50 0.37 -2.89
+#> 3 Median Undecontaminated -0.25 0.39 0.00 -1.34
 ```
 
 ### 3.3.2 - Continuous ranked probability score
@@ -1509,25 +1504,25 @@ BMM.CRPS <- fingR::CRPS(obs = VM.contrib,                                       
                         save.dir = dir.mod.BMM,                                       # Optional - Directory path to save results
                         # note = "example"                                            # Optional - Additional file name annotation
                         )
-#> Lade nötiges Paket: scoringRules
+#> Loading required package: scoringRules
 ```
 
 ``` r
 BMM.CRPS$samples[1:5,]
 #>   Sample_name Forest Subsoil Undecontaminated
-#> 1      VM-001 0.0841  0.2615           0.5343
-#> 2      VM-002 0.0710  0.3822           0.6758
-#> 3      VM-003 0.0225  0.3324           0.4596
-#> 4      VM-004 0.0774  0.2062           0.4256
-#> 5      VM-005 0.0360  0.2387           0.3727
+#> 1      VM-001 0.0666  0.2688           0.5148
+#> 2      VM-002 0.0840  0.2910           0.6147
+#> 3      VM-003 0.0290  0.3530           0.5196
+#> 4      VM-004 0.0144  0.4115           0.4952
+#> 5      VM-005 0.0400  0.2562           0.3817
 ```
 
 ``` r
 BMM.CRPS$mean
 #>             Source CRPS.mean
-#> 1           Forest    0.1375
-#> 2          Subsoil    0.1645
-#> 3 Undecontaminated    0.1886
+#> 1           Forest    0.1407
+#> 2          Subsoil    0.1722
+#> 3 Undecontaminated    0.1864
 ```
 
 ### 3.3.3 - Prediction interval width
@@ -1565,12 +1560,12 @@ BMM.predWidth <- fingR::interval.width(path.to.prev = paste0(dir.mod.BMM, "BMM_p
 ``` r
 BMM.predWidth$samples[1:6,]
 #>   mix.names           source   W50   W95
-#> 1    VM-001           Forest 0.329 0.997
-#> 2    VM-001          Subsoil 0.820 0.997
-#> 3    VM-001 Undecontaminated 0.464 0.997
-#> 4    VM-002           Forest 0.319 0.997
-#> 5    VM-002          Subsoil 0.623 0.997
-#> 6    VM-002 Undecontaminated 0.224 0.997
+#> 1    VM-001           Forest 0.378 0.935
+#> 2    VM-001          Subsoil 0.725 0.997
+#> 3    VM-001 Undecontaminated 0.554 0.994
+#> 4    VM-002           Forest 0.475 0.997
+#> 5    VM-002          Subsoil 0.947 0.997
+#> 6    VM-002 Undecontaminated 0.326 0.763
 ```
 
 ``` r
@@ -1578,9 +1573,9 @@ BMM.predWidth$mean
 #> # A tibble: 3 × 3
 #>   Source           W50.mean W95.mean
 #>   <chr>               <dbl>    <dbl>
-#> 1 Forest              0.361    0.893
-#> 2 Subsoil             0.589    0.963
-#> 3 Undecontaminated    0.407    0.931
+#> 1 Forest              0.341    0.877
+#> 2 Subsoil             0.592    0.964
+#> 3 Undecontaminated    0.408    0.928
 ```
 
 ### 3.3.4 - Encompassed sample predictions
@@ -1614,7 +1609,7 @@ BMM.ESP <- fingR::ESP(obs = BMM.preds.VM,                       # data.frame wit
 ``` r
 BMM.ESP
 #>                                   Source ESP.Number ESP.Percentage
-#> Median_Forest                     Forest         36             95
+#> Median_Forest                     Forest         34             89
 #> Median_Subsoil                   Subsoil         38            100
 #> Median_Undecontaminated Undecontaminated         17             45
 ```
@@ -1739,6 +1734,3 @@ utils::citation(package = "fingR")
 - Stock, B. C., Semmens, B. X., Ward, E. J., Parnell, A. C., &
   Phillips, D. L. (2022). JAGS: Bayesian Mixing Models in R (Version
   4.3.1) \[Computer software\]. <https://doi.org/10.5281/zenodo.1209993>
-
-
-

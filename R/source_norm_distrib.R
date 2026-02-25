@@ -48,7 +48,7 @@ source.norm.distrib <- function(data, class, tracers, n = 2500, multivar = FALSE
     }else{ # if multivariate distribution
       require(MASS)
 
-      sigma <- cov(MND) #  properties covariance
+      sigma <- stats::cov(MND) #  properties covariance
       assign(source.name, exp(mvrnorm(n = 2500, mu, sigma)))
     }
     MND.sources <- rbind(MND.sources, lvl)
