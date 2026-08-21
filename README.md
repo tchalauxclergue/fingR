@@ -9,11 +9,11 @@
 version](https://img.shields.io/github/r-package/v/tchalauxclergue/fingR?logo=github)
 ![GitHub Release
 Date](https://img.shields.io/github/release-date/tchalauxclergue/fingR?color=blue)
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1402028.svg)](https://doi.org/10.5281/zenodo.8293595)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.8293595.svg)](https://doi.org/10.5281/zenodo.8293595)
 [![GitHub
 Downloads](https://img.shields.io/github/downloads/tchalauxclergue/fingR/total?label=GitHub%20downloads&style=flat)](https://github.com/tchalauxclergue/fingR/releases)
 [![Zenodo
-Downloads](https://img.shields.io/badge/Zenodo%20downloads-191-blue)](https://zenodo.org/records/15412071)
+Downloads](https://img.shields.io/badge/Zenodo%20downloads-211-blue)](https://zenodo.org/records/8293595)
 ![Project Status: Active – The project has reached a stable, usable
 state and is being actively
 developed.](http://www.repostatus.org/badges/latest/active.svg)
@@ -103,10 +103,10 @@ archived on [Zenodo](https://zenodo.org/records/10796375).
 library(devtools)
 
 # Install the most recent version from GitHub - check github page for updates
-devtools::install_github("https://github.com/tchalauxclergue/fingR/releases/tag/2.2.0", ref = "master", force = T)
+devtools::install_github("https://github.com/tchalauxclergue/fingR/releases/tag/2.1.4", ref = "master", force = T)
 
 # Alternatively, install from a downloaded '.tar.gz' file
-devtools::install_local("path_to_file/fingR_2.2.0.tar.gz", repos = NULL)
+devtools::install_local("path_to_file/fingR_2.1.4.tar.gz", repos = NULL)
 # 'path_to_file' should be modified accordingly to your working environment
 ```
 
