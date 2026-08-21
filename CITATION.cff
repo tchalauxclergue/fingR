@@ -1,0 +1,17 @@
+cff-version: 1.2.0
+message: "To cite the 'fingR' package, please cite it as below."
+authors:
+- family-names: "Chalaux-Clergue"
+  given-names: "Thomas"
+  orcid: "https://orcid.org/0000-0003-3525-832X"
+- family-names: "Bizeul"
+  given-names: "Rémi"
+  orcid: "https://orcid.org/0000-0002-4103-9839"
+- family-names: "Amaury"
+  given-names: "Bardelle"
+  orcid: "https://orcid.org/0009-0000-8953-8402"
+title: "fingR: A support to sediment source fingerprinting studies"
+version: 2.1.4
+doi: 10.5281/zenodo.8293595
+date-released: 2025-07-24
+url: "https://github.com/tchalauxclergue/fingR"
